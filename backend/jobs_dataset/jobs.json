@@ -1,0 +1,502 @@
+[
+  {
+    "id": "job_001",
+    "title": "Backend Engineer",
+    "company_type": "startup",
+    "level": "mid",
+    "required_skills": ["Python", "FastAPI", "Docker", "PostgreSQL", "REST APIs"],
+    "nice_to_have": ["Kubernetes", "AWS", "Redis"],
+    "description": "Develop and maintain robust backend services using FastAPI and Python. You will be responsible for designing scalable database architectures and deploying containerized applications.",
+    "category": "backend"
+  },
+  {
+    "id": "job_002",
+    "title": "Python Developer",
+    "company_type": "enterprise",
+    "level": "junior",
+    "required_skills": ["Python", "Django", "SQL", "Git"],
+    "nice_to_have": ["Celery", "Redis", "Linux"],
+    "description": "Join our enterprise team to build internal tools and workflow automation using Django. Work closely with senior engineers to optimize SQL performance.",
+    "category": "backend"
+  },
+  {
+    "id": "job_003",
+    "title": "Node.js Engineer",
+    "company_type": "agency",
+    "level": "senior",
+    "required_skills": ["Node.js", "Express", "MongoDB", "TypeScript", "Microservices"],
+    "nice_to_have": ["GraphQL", "Docker", "Redis"],
+    "description": "Lead the development of high-performance microservices for our diverse client base. Mentor junior developers and design scalable TypeScript architectures.",
+    "category": "backend"
+  },
+  {
+    "id": "job_004",
+    "title": "Go Developer",
+    "company_type": "startup",
+    "level": "mid",
+    "required_skills": ["Go", "gRPC", "Docker", "PostgreSQL"],
+    "nice_to_have": ["Kubernetes", "Kafka", "AWS"],
+    "description": "Build extremely fast, concurrent backend communications systems using Go and gRPC. Optimize performance and containerize services for rapid deployment.",
+    "category": "backend"
+  },
+  {
+    "id": "job_005",
+    "title": "API Engineer",
+    "company_type": "enterprise",
+    "level": "senior",
+    "required_skills": ["Python", "FastAPI", "GraphQL", "OAuth2", "System Design"],
+    "nice_to_have": ["Terraform", "AWS API Gateway", "Redis"],
+    "description": "Architect and secure public-facing APIs tracking millions of daily requests. Define enterprise-wide API standards using modern frameworks like FastAPI.",
+    "category": "backend"
+  },
+  {
+    "id": "job_006",
+    "title": "Frontend Developer",
+    "company_type": "startup",
+    "level": "junior",
+    "required_skills": ["HTML", "CSS", "JavaScript", "React"],
+    "nice_to_have": ["Tailwind CSS", "TypeScript", "Figma"],
+    "description": "Bring beautifully designed mockups to life using React and modern CSS. Collaborate with designers to ensure a seamless and responsive user experience.",
+    "category": "frontend"
+  },
+  {
+    "id": "job_007",
+    "title": "React Engineer",
+    "company_type": "enterprise",
+    "level": "mid",
+    "required_skills": ["React", "TypeScript", "Redux", "Jest", "Webpack"],
+    "nice_to_have": ["Next.js", "Storybook", "Cypress"],
+    "description": "Build complex, state-heavy enterprise dashboards using React and Redux. Write comprehensive unit tests and optimize bundle sizes for rapid loading.",
+    "category": "frontend"
+  },
+  {
+    "id": "job_008",
+    "title": "Vue.js Developer",
+    "company_type": "agency",
+    "level": "mid",
+    "required_skills": ["Vue.js", "Nuxt.js", "JavaScript", "Sass"],
+    "nice_to_have": ["Vuex", "Pinia", "Firebase"],
+    "description": "Create dynamic marketing sites and fast web applications for clients using Vue.js and Nuxt. Focus on animations and modern styling techniques.",
+    "category": "frontend"
+  },
+  {
+    "id": "job_009",
+    "title": "UI Engineer",
+    "company_type": "startup",
+    "level": "senior",
+    "required_skills": ["React", "TypeScript", "Tailwind CSS", "Framer Motion", "Accessibility"],
+    "nice_to_have": ["WebGL", "Three.js", "UX Design"],
+    "description": "Push the boundaries of web UI with highly interactive, accessible, and deeply animated components. Own our central design system and shape the product's visual identity.",
+    "category": "frontend"
+  },
+  {
+    "id": "job_010",
+    "title": "Web Developer",
+    "company_type": "enterprise",
+    "level": "junior",
+    "required_skills": ["JavaScript", "HTML5", "CSS3", "PHP", "WordPress"],
+    "nice_to_have": ["jQuery", "MySQL", "SEO"],
+    "description": "Maintain and expand the company's main public-facing websites. Implement SEO best practices and optimize existing legacy PHP pages.",
+    "category": "frontend"
+  },
+  {
+    "id": "job_011",
+    "title": "Full Stack Developer",
+    "company_type": "startup",
+    "level": "mid",
+    "required_skills": ["JavaScript", "Node.js", "React", "PostgreSQL", "Git"],
+    "nice_to_have": ["TypeScript", "Docker", "AWS"],
+    "description": "Own feature development end-to-end, from the database schema up to the React UI. Work quickly in an agile environment to test and iterate new product ideas.",
+    "category": "fullstack"
+  },
+  {
+    "id": "job_012",
+    "title": "MERN Stack Engineer",
+    "company_type": "agency",
+    "level": "senior",
+    "required_skills": ["MongoDB", "Express", "React", "Node.js", "Redux"],
+    "nice_to_have": ["GraphQL", "Socket.io", "AWS"],
+    "description": "Build high-quality custom web applications utilizing the complete MERN stack. Act as a technical lead guiding architecture choices for high-profile client projects.",
+    "category": "fullstack"
+  },
+  {
+    "id": "job_013",
+    "title": "Software Engineer (Full Stack)",
+    "company_type": "enterprise",
+    "level": "mid",
+    "required_skills": ["Java", "Spring Boot", "Angular", "SQL", "Jenkins"],
+    "nice_to_have": ["Docker", "Kubernetes", "TypeScript"],
+    "description": "Develop scalable enterprise solutions crossing Java backend services and Angular frontends. Contribute to CI/CD pipelines to streamline internal deployments.",
+    "category": "fullstack"
+  },
+  {
+    "id": "job_014",
+    "title": "Fullstack Python Developer",
+    "company_type": "startup",
+    "level": "senior",
+    "required_skills": ["Python", "Django", "Vue.js", "PostgreSQL", "Redis"],
+    "nice_to_have": ["Celery", "AWS", "Tailwind CSS"],
+    "description": "Architect core business logic using Django and build fast interactive frontends with Vue. Optimize the full request lifecycle to handle growing user traffic.",
+    "category": "fullstack"
+  },
+  {
+    "id": "job_015",
+    "title": "Junior Full Stack Developer",
+    "company_type": "agency",
+    "level": "junior",
+    "required_skills": ["Ruby on Rails", "JavaScript", "HTML", "CSS", "PostgreSQL"],
+    "nice_to_have": ["React", "Heroku", "Git"],
+    "description": "Collaborate with experienced engineers to build out robust applications using Ruby on Rails. A great learning environment to develop comprehensive full-stack skills.",
+    "category": "fullstack"
+  },
+  {
+    "id": "job_016",
+    "title": "Data Scientist",
+    "company_type": "enterprise",
+    "level": "mid",
+    "required_skills": ["Python", "Pandas", "Scikit", "SQL", "Statistics"],
+    "nice_to_have": ["R", "Tableau", "AWS"],
+    "description": "Analyze large datasets to extract actionable business intelligence. Build predictive models using standard machine learning libraries to guide product strategy.",
+    "category": "data"
+  },
+  {
+    "id": "job_017",
+    "title": "Data Analyst",
+    "company_type": "startup",
+    "level": "junior",
+    "required_skills": ["SQL", "Excel", "Data Visualization", "Python"],
+    "nice_to_have": ["Looker", "Google Analytics", "dbt"],
+    "description": "Help the marketing and product teams understand user behavior. Write optimize SQL queries and build live dashboards monitoring key performance metrics.",
+    "category": "data"
+  },
+  {
+    "id": "job_018",
+    "title": "ML Engineer",
+    "company_type": "enterprise",
+    "level": "senior",
+    "required_skills": ["Python", "PyTorch", "TensorFlow", "Docker", "MLOps"],
+    "nice_to_have": ["Kubernetes", "CUDA", "Spark"],
+    "description": "Deploy complex deep learning models into production environments. Optimize model inference times and develop rigorous MLOps pipelines for model tracking.",
+    "category": "data"
+  },
+  {
+    "id": "job_019",
+    "title": "Data Engineer",
+    "company_type": "startup",
+    "level": "mid",
+    "required_skills": ["Python", "SQL", "Spark", "Airflow", "ETL"],
+    "nice_to_have": ["Snowflake", "AWS Redshift", "Kafka"],
+    "description": "Design and build scalable data pipelines processing millions of daily events. Work closely with data scientists to ensure high-quality data availability.",
+    "category": "data"
+  },
+  {
+    "id": "job_020",
+    "title": "AI/ML Researcher",
+    "company_type": "agency",
+    "level": "senior",
+    "required_skills": ["Python", "PyTorch", "NLP", "Mathematics", "Transformers"],
+    "nice_to_have": ["HuggingFace", "LangChain", "C++"],
+    "description": "Conduct cutting-edge R&D focusing on large language models and natural language processing. Publish findings and implement novel architectures for special client projects.",
+    "category": "data"
+  },
+  {
+    "id": "job_021",
+    "title": "DevOps Engineer",
+    "company_type": "startup",
+    "level": "mid",
+    "required_skills": ["Linux", "Docker", "AWS", "CI/CD", "Bash"],
+    "nice_to_have": ["Terraform", "Ansible", "Kubernetes"],
+    "description": "Manage and improve our cloud infrastructure on AWS. Streamline developer productivity by maintaining efficient, automated CI/CD deployment pipelines.",
+    "category": "devops"
+  },
+  {
+    "id": "job_022",
+    "title": "Site Reliability Engineer",
+    "company_type": "enterprise",
+    "level": "senior",
+    "required_skills": ["Kubernetes", "Linux", "Python", "Prometheus", "Terraform"],
+    "nice_to_have": ["Go", "Grafana", "Incident Management"],
+    "description": "Ensure five-nines reliability across our global microservice architecture. Implement deep telemetry, define SLAs, and lead major incident responses.",
+    "category": "devops"
+  },
+  {
+    "id": "job_023",
+    "title": "Cloud Engineer",
+    "company_type": "enterprise",
+    "level": "mid",
+    "required_skills": ["Azure", "Powershell", "Terraform", "Active Directory"],
+    "nice_to_have": ["Docker", "C#", "Networking"],
+    "description": "Architect and manage secure corporate infrastructure within Microsoft Azure. Implement infrastructure as code and assist in migrating legacy systems to the cloud.",
+    "category": "devops"
+  },
+  {
+    "id": "job_024",
+    "title": "Platform Engineer",
+    "company_type": "startup",
+    "level": "senior",
+    "required_skills": ["Go", "Kubernetes", "Docker", "Helm", "CI/CD"],
+    "nice_to_have": ["Python", "ArgoCD", "Istio"],
+    "description": "Build the internal developer platform that powers all engineering teams. Create self-service tools and Kubernetes operators to abstract away infrastructure complexity.",
+    "category": "devops"
+  },
+  {
+    "id": "job_025",
+    "title": "Junior DevOps Engineer",
+    "company_type": "agency",
+    "level": "junior",
+    "required_skills": ["Linux", "Git", "Docker", "GitHub Actions"],
+    "nice_to_have": ["Python", "AWS", "Nginx"],
+    "description": "Assist in deploying and monitoring web applications for various clients. Learn modern infrastructure practices while managing linux servers and containerized deployments.",
+    "category": "devops"
+  },
+  {
+    "id": "job_026",
+    "title": "Android Developer",
+    "company_type": "startup",
+    "level": "mid",
+    "required_skills": ["Kotlin", "Android SDK", "MVVM", "Coroutines", "Git"],
+    "nice_to_have": ["Jetpack Compose", "Java", "Dagger"],
+    "description": "Build fluid native Android experiences using modern Kotlin. Partner with product teams to design and implement innovative mobile features.",
+    "category": "mobile"
+  },
+  {
+    "id": "job_027",
+    "title": "iOS Developer",
+    "company_type": "enterprise",
+    "level": "senior",
+    "required_skills": ["Swift", "iOS SDK", "SwiftUI", "CoreData", "Combine"],
+    "nice_to_have": ["Objective-C", "XCTest", "CI/CD"],
+    "description": "Lead the development of our flagship iOS application reaching millions of users. Architect robust SwiftUI interfaces and manage complex local states securely.",
+    "category": "mobile"
+  },
+  {
+    "id": "job_028",
+    "title": "React Native Developer",
+    "company_type": "agency",
+    "level": "mid",
+    "required_skills": ["React Native", "JavaScript", "TypeScript", "Redux"],
+    "nice_to_have": ["Swift", "Kotlin", "Firebase"],
+    "description": "Create cross-platform mobile apps for diverse clients using React Native. Bridge the gap between native and web technologies to deliver highly performant solutions.",
+    "category": "mobile"
+  },
+  {
+    "id": "job_029",
+    "title": "Junior iOS Engineer",
+    "company_type": "startup",
+    "level": "junior",
+    "required_skills": ["Swift", "UIKit", "Git", "REST APIs"],
+    "nice_to_have": ["SwiftUI", "CoreAnimation", "Figma"],
+    "description": "Work alongside senior engineers to rapidly iterate on our consumer iOS app. Great opportunity to master Swift and modern Apple frameworks in a fast-paced setting.",
+    "category": "mobile"
+  },
+  {
+    "id": "job_030",
+    "title": "Mobile Tech Lead",
+    "company_type": "enterprise",
+    "level": "senior",
+    "required_skills": ["Kotlin", "Swift", "Architecture", "CI/CD", "Leadership"],
+    "nice_to_have": ["React Native", "Flutter", "Python"],
+    "description": "Oversee both Android and iOS engineering teams ensuring code quality and architectural alignment. Define the technical roadmap for all mobile initiatives.",
+    "category": "mobile"
+  },
+  {
+    "id": "job_031",
+    "title": "Backend Services Engineer",
+    "company_type": "startup",
+    "level": "senior",
+    "required_skills": ["Python", "FastAPI", "Redis", "Elasticsearch", "PostgreSQL"],
+    "nice_to_have": ["gRPC", "Docker", "AWS"],
+    "description": "Design distributed cache systems and power extremely fast search leveraging Elasticsearch. Optimize complex database queries handling immense data volumes.",
+    "category": "backend"
+  },
+  {
+    "id": "job_032",
+    "title": "Senior Frontend Architect",
+    "company_type": "enterprise",
+    "level": "senior",
+    "required_skills": ["React", "TypeScript", "Micro-frontends", "Webpack", "System Design"],
+    "nice_to_have": ["Node.js", "GraphQL", "AWS"],
+    "description": "Transition our legacy monolithic frontend into a modern micro-frontend architecture. Set coding standards and define the build pipeline for 50+ developers.",
+    "category": "frontend"
+  },
+  {
+    "id": "job_033",
+    "title": "Product Engineer (Fullstack)",
+    "company_type": "startup",
+    "level": "mid",
+    "required_skills": ["React", "Next.js", "TypeScript", "Node.js", "Prisma"],
+    "nice_to_have": ["Tailwind CSS", "Vercel", "PostgreSQL"],
+    "description": "Work hyper-functionally across the stack using Next.js to rapidly build features customers love. Highly product-focused role involving deep user empathy.",
+    "category": "fullstack"
+  },
+  {
+    "id": "job_034",
+    "title": "Quantitative Data Analyst",
+    "company_type": "enterprise",
+    "level": "senior",
+    "required_skills": ["Python", "SQL", "Statistics", "R", "Financial Modeling"],
+    "nice_to_have": ["C++", "AWS", "Jupyter"],
+    "description": "Build complex statistical models to drive trading strategies and risk assessments. Work closely with financial experts to translate market behaviors into code.",
+    "category": "data"
+  },
+  {
+    "id": "job_035",
+    "title": "Security Operations Engineer",
+    "company_type": "enterprise",
+    "level": "mid",
+    "required_skills": ["Linux", "Python", "Networking", "SIEM", "AWS Security"],
+    "nice_to_have": ["Certifications", "Bash", "Incident Response"],
+    "description": "Monitor and secure enterprise cloud infrastructure. Implement automated threat detection systems and refine incident response protocols.",
+    "category": "devops"
+  },
+  {
+    "id": "job_036",
+    "title": "Flutter Developer",
+    "company_type": "agency",
+    "level": "mid",
+    "required_skills": ["Flutter", "Dart", "REST APIs", "Git"],
+    "nice_to_have": ["Firebase", "Provider", "Swift"],
+    "description": "Build expressive, natively compiled applications for mobile and web from a single codebase using Flutter. Collaborate on diverse client projects.",
+    "category": "mobile"
+  },
+  {
+    "id": "job_037",
+    "title": "Ruby Backend Engineer",
+    "company_type": "startup",
+    "level": "mid",
+    "required_skills": ["Ruby", "Ruby on Rails", "PostgreSQL", "RSpec"],
+    "nice_to_have": ["Redis", "Sidekiq", "AWS"],
+    "description": "Develop scalable API services and performant background jobs using Ruby on Rails. Maintain clean code through rigorous test-driven development.",
+    "category": "backend"
+  },
+  {
+    "id": "job_038",
+    "title": "Angular Specialist",
+    "company_type": "enterprise",
+    "level": "senior",
+    "required_skills": ["Angular", "TypeScript", "RxJS", "Sass", "Jasmine"],
+    "nice_to_have": ["Java", "NgRx", "Cypress"],
+    "description": "Take ownership of massive internal enterprise portals built in Angular. Architect reactive data flows using RxJS and enforce strict TypeScript typings.",
+    "category": "frontend"
+  },
+  {
+    "id": "job_039",
+    "title": "Web3 Full Stack Engineer",
+    "company_type": "startup",
+    "level": "senior",
+    "required_skills": ["Solidity", "React", "TypeScript", "Node.js", "Ethers.js"],
+    "nice_to_have": ["Rust", "Hardhat", "Cryptography"],
+    "description": "Bridge traditional web technologies with decentralized protocols. Develop secure smart contracts and seamless React frontends connecting to the blockchain.",
+    "category": "fullstack"
+  },
+  {
+    "id": "job_040",
+    "title": "Computer Vision Engineer",
+    "company_type": "startup",
+    "level": "senior",
+    "required_skills": ["Python", "PyTorch", "OpenCV", "C++", "Deep Learning"],
+    "nice_to_have": ["TensorRT", "CUDA", "Edge AI"],
+    "description": "Design state-of-the-art computer vision models for real-time edge devices. Optimize inference performance and push the boundaries of spatial artificial intelligence.",
+    "category": "data"
+  },
+  {
+    "id": "job_041",
+    "title": "Release Engineer",
+    "company_type": "enterprise",
+    "level": "mid",
+    "required_skills": ["Jenkins", "Python", "Bash", "Git", "Linux"],
+    "nice_to_have": ["Docker", "Artifactory", "Groovy"],
+    "description": "Own the release cycles for critical software product lines. Automate branching strategies, versioning, and distribution mechanisms ensuring zero-downtime releases.",
+    "category": "devops"
+  },
+  {
+    "id": "job_042",
+    "title": "Android Platform Engineer",
+    "company_type": "enterprise",
+    "level": "senior",
+    "required_skills": ["C++", "Java", "Android AOSP", "Linux Kernel"],
+    "nice_to_have": ["Kotlin", "Hardware Integration", "JNI"],
+    "description": "Dive deep into the Android Open Source Project to customize the OS for proprietary hardware devices. Bridge the gap between low-level drivers and the application layer.",
+    "category": "mobile"
+  },
+  {
+    "id": "job_043",
+    "title": "Scala Backend Developer",
+    "company_type": "startup",
+    "level": "mid",
+    "required_skills": ["Scala", "Akka", "Play Framework", "PostgreSQL"],
+    "nice_to_have": ["Kafka", "Spark", "AWS"],
+    "description": "Build highly scalable, functional-programming distributed systems. Process streams of real-time data efficiently using Scala and Akka actors.",
+    "category": "backend"
+  },
+  {
+    "id": "job_044",
+    "title": "Creative Frontend Developer",
+    "company_type": "agency",
+    "level": "mid",
+    "required_skills": ["JavaScript", "WebGL", "Three.js", "GSAP", "CSS"],
+    "nice_to_have": ["React", "GLSL", "Blender"],
+    "description": "Craft award-winning digital experiences. Specialize in 3D web graphics, complex scroll animations, and pushing visual limits for high-end boutique brands.",
+    "category": "frontend"
+  },
+  {
+    "id": "job_045",
+    "title": "Senior Vue Core Developer",
+    "company_type": "startup",
+    "level": "senior",
+    "required_skills": ["Vue.js", "TypeScript", "Vite", "Node.js", "Architecture"],
+    "nice_to_have": ["React", "Open Source", "NPM"],
+    "description": "Lead the central frontend team developing a shared library of reactive Vue components. Influence the global tech stack and ensure incredible developer experience.",
+    "category": "fullstack"
+  },
+  {
+    "id": "job_046",
+    "title": "Data Infrastructure Engineer",
+    "company_type": "enterprise",
+    "level": "senior",
+    "required_skills": ["Java", "Scala", "Hadoop", "Spark", "Kafka"],
+    "nice_to_have": ["Kubernetes", "AWS EMR", "Airflow"],
+    "description": "Maintain the massive central data lake supporting all organizational analytics. Optimize distributed computing jobs executing on petabyte-scale data clusters.",
+    "category": "data"
+  },
+  {
+    "id": "job_047",
+    "title": "Kubernetes Administrator",
+    "company_type": "enterprise",
+    "level": "senior",
+    "required_skills": ["Kubernetes", "Docker", "Linux", "Networking", "Security"],
+    "nice_to_have": ["CKA", "AWS EKS", "Go"],
+    "description": "Manage extensive bare-metal Kubernetes clusters. Ensure high-availability configurations, optimize resource allocations, and enforce stringent security policies.",
+    "category": "devops"
+  },
+  {
+    "id": "job_048",
+    "title": "Mobile QA Automation Engineer",
+    "company_type": "startup",
+    "level": "mid",
+    "required_skills": ["Appium", "Python", "Java", "CI/CD"],
+    "nice_to_have": ["Selenium", "Espresso", "XCUITest"],
+    "description": "Write comprehensive automated testing suites for our iOS and Android applications. Integrate tests deeply into our deployment pipelines ensuring zero regressions.",
+    "category": "mobile"
+  },
+  {
+    "id": "job_049",
+    "title": "E-Commerce Backend Specialist",
+    "company_type": "agency",
+    "level": "mid",
+    "required_skills": ["PHP", "Magento", "MySQL", "Redis", "Elasticsearch"],
+    "nice_to_have": ["Docker", "AWS", "Node.js"],
+    "description": "Develop bespoke e-commerce solutions handling high-volume online retail transactions. Optimize database interactions and integrate deeply with third-party payment gateways.",
+    "category": "backend"
+  },
+  {
+    "id": "job_050",
+    "title": "Svelte Engineer",
+    "company_type": "startup",
+    "level": "junior",
+    "required_skills": ["Svelte", "SvelteKit", "JavaScript", "HTML", "CSS"],
+    "nice_to_have": ["Tailwind CSS", "Vite", "TypeScript"],
+    "description": "Join our cutting-edge frontend team embracing Svelte. Build highly optimized, lean web applications that compile away the framework overhead.",
+    "category": "frontend"
+  }
+]
