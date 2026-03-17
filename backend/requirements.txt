@@ -13,3 +13,5 @@ openai
 httpx
 python-multipart
 numpy
+pydantic[email]
+email-validator
