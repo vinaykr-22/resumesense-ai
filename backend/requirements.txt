@@ -3,7 +3,7 @@ uvicorn[standard]
 python-dotenv
 pdfplumber
 python-docx
-torch==2.2.2+cpu --extra-index-url https://download.pytorch.org/whl/cpu
+torch --index-url https://download.pytorch.org/whl/cpu
 sentence-transformers==2.7.0
 chromadb==0.5.3
 python-jose[cryptography]
