@@ -24,20 +24,13 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="FastAPI Backend", lifespan=lifespan)
 
-# CORS configuration
-allowed_origins_str = os.getenv(
-    "ALLOWED_ORIGINS", 
-    "http://localhost:5173"
-)
-allowed_origins = [o.strip() for o in allowed_origins_str.split(",")]
-
+# CORS configuration (temporary: allow all origins for debugging)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=["*"],
 )
 
 # Logging configuration
