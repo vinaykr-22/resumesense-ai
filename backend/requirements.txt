@@ -16,3 +16,5 @@ python-multipart
 numpy
 pydantic[email]
 email-validator
+chromadb==0.5.3
+onnxruntime
