@@ -4,7 +4,7 @@ python-dotenv
 pdfplumber
 python-docx
 sentence-transformers
-chromadb==0.4.22
+chromadb==0.5.3
 python-jose[cryptography]
 passlib[bcrypt]
 celery
