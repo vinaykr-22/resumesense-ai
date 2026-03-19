@@ -1,4 +1,6 @@
 import os
+import logging
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
@@ -6,18 +8,36 @@ from dotenv import load_dotenv
 # Load environment variables from .env
 load_dotenv()
 
-app = FastAPI(title="FastAPI Backend")
+logger = logging.getLogger(__name__)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    try:
+        logger.info("Running startup tasks...")
+        from jobs_dataset.seed_embeddings import seed_jobs
+        seed_jobs()
+        logger.info("Startup tasks complete.")
+    except Exception as e:
+        logger.warning(f"Startup task failed (non-fatal): {e}")
+        # Do NOT re-raise — server must start regardless
+    yield
+
+app = FastAPI(title="FastAPI Backend", lifespan=lifespan)
 
 # CORS configuration
-allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173")
-origins = [origin.strip() for origin in allowed_origins_env.split(",") if origin.strip()]
+allowed_origins_str = os.getenv(
+    "ALLOWED_ORIGINS", 
+    "http://localhost:5173"
+)
+allowed_origins = [o.strip() for o in allowed_origins_str.split(",")]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["Authorization", "*"],
+    allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 # Logging configuration
@@ -128,6 +148,8 @@ api_router.include_router(job_routes.router, prefix="/jobs", tags=["jobs"])
 
 # Register the main wrapper router
 app.include_router(api_router)
+
+
 
 if __name__ == "__main__":
     import uvicorn
