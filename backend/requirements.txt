@@ -3,8 +3,6 @@ uvicorn[standard]
 python-dotenv
 pdfplumber
 python-docx
-torch --extra-index-url https://download.pytorch.org/whl/cpu
-sentence-transformers==2.7.0
 chromadb==0.5.3
 python-jose[cryptography]
 passlib[bcrypt]
@@ -16,4 +14,3 @@ python-multipart
 numpy
 pydantic[email]
 email-validator
-onnxruntime

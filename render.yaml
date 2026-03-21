@@ -17,5 +17,7 @@ services:
         sync: false
       - key: ALLOWED_ORIGINS
         value: https://resumesense-ai-khaki.vercel.app
+      - key: AUTO_SEED_JOBS
+        value: "true"
       - key: PORT
         value: 10000
