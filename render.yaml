@@ -14,10 +14,8 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: REDIS_URL
-        fromService:
-          name: resumesense-redis
-          type: redis
-          property: connectionString
-  - type: redis
-    name: resumesense-redis
-    plan: free
+        sync: false
+      - key: ALLOWED_ORIGINS
+        value: https://resumesense-ai-khaki.vercel.app
+      - key: PORT
+        value: 10000

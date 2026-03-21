@@ -1,9 +1,9 @@
-﻿fastapi
+fastapi
 uvicorn[standard]
 python-dotenv
 pdfplumber
 python-docx
-torch --index-url https://download.pytorch.org/whl/cpu
+torch --extra-index-url https://download.pytorch.org/whl/cpu
 sentence-transformers==2.7.0
 chromadb==0.5.3
 python-jose[cryptography]
@@ -16,5 +16,4 @@ python-multipart
 numpy
 pydantic[email]
 email-validator
-chromadb==0.5.3
 onnxruntime
