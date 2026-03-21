@@ -135,9 +135,24 @@ from services.llm_provider import llm
 async def llm_health_check():
     try:
         result = await llm.complete("Say hello in exactly three words.")
-        return {"provider": llm.provider, "response": result, "ok": True}
+        return {
+            "provider": llm.provider,
+            "model": getattr(llm, 'openai_model', 'unknown'),
+            "response": result,
+            "ok": True
+        }
     except Exception as e:
-        return {"provider": llm.provider, "error": str(e), "ok": False}
+        import traceback
+        return {
+            "provider": llm.provider,
+            "model": getattr(llm, 'openai_model', 'unknown'),
+            "has_openai_key": bool(llm.openai_api_key),
+            "openai_key_prefix": llm.openai_api_key[:12] + "..." if llm.openai_api_key else None,
+            "error_type": type(e).__name__,
+            "error": str(e),
+            "traceback": traceback.format_exc()[-500:],
+            "ok": False
+        }
 
 from routes import auth_routes, resume_routes, job_routes
 api_router.include_router(auth_routes.router, prefix="/auth", tags=["auth"])
