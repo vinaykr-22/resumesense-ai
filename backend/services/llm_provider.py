@@ -30,13 +30,19 @@ class LLMProvider:
             result = await primary(prompt, system)
             return result
         except Exception as e:
+            primary_error = f"{type(e).__name__}: {e}"
             logger.warning(
-                f"Primary provider ({primary.__name__}) failed: {type(e).__name__} {e!r}. Falling back to secondary."
+                f"Primary provider ({primary.__name__}) failed: {primary_error}. Falling back to secondary."
             )
 
             # If the fallback is OpenAI but we don't have a key, don't bother retrying.
             if secondary == self._openai and not self.openai_client:
                 raise
+            
+            # If the fallback is Ollama and we're running with OpenAI as primary,
+            # skip it — Ollama won't be available in cloud environments.
+            if secondary == self._ollama and self.provider == "openai":
+                raise RuntimeError(f"OpenAI failed: {primary_error}")
 
             try:
                 result = await secondary(prompt, system)
