@@ -8,11 +8,9 @@ import UploadPage from './pages/Upload';
 import Dashboard from './pages/Dashboard';
 import History from './pages/History';
 import Results from './pages/Results';
+import Jobs from './pages/Jobs';
 
 import { ToastProvider } from './context/ToastContext';
-
-// Placeholder for unbuilt pages
-const Jobs = () => <div className="animate-fade-in"><h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Job Matches</h1><p style={{ color: 'var(--text-muted)' }}>Find jobs synced to your skills.</p></div>;
 
 import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';

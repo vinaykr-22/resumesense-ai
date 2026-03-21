@@ -2,8 +2,10 @@ services:
   - type: web
     name: resumesense-api
     env: python
+    rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: bash startup.sh
+    healthCheckPath: /api/v1/health
     envVars:
       - key: LLM_PROVIDER
         value: openai

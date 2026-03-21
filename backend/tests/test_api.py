@@ -41,3 +41,13 @@ def test_invalid_upload_format():
     response = client.post("/api/v1/resume/upload", headers=headers, files=files)
     assert response.status_code == 400
     assert response.json() == {"detail": "Only PDF and DOCX files are supported"}
+
+if __name__ == "__main__":
+    print("Running tests...")
+    test_api_health()
+    print("Health check passed!")
+    test_missing_auth_header()
+    print("Auth header check passed!")
+    test_invalid_upload_format()
+    print("Invalid upload format check passed!")
+    print("All tests passed!")

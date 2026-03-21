@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException, Path, Depends, UploadFile, File, s
 from services.auth import get_current_user
 from database.redis_client import get_status, redis_client
 from services.resume_parser import extract_text
-from tasks.celery_app import process_resume
+from tasks.celery_app import _process_resume_sync
 from services.rate_limiter import RateLimiter
 
 router = APIRouter()
@@ -63,9 +63,8 @@ async def upload_resume(
     from database.redis_client import store_status
     store_status(resume_id, {"status": "queued", "progress": 5})
     
-    # 6. Dispatch Background Task
-    # TODO: Replace with Celery on paid tier.
-    background_tasks.add_task(process_resume, resume_id, extracted_text)
+    # 6. Dispatch Background Task (uses the plain function, NOT the Celery task)
+    background_tasks.add_task(_process_resume_sync, resume_id, extracted_text)
     
     # 7. Return status
     return {

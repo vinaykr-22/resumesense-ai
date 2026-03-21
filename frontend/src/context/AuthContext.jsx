@@ -50,15 +50,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
-    const formData = new URLSearchParams();
-    formData.append('username', email); // OAuth2 expects 'username' instead of 'email'
-    formData.append('password', password);
-
-    const response = await api.post('/auth/login', formData, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    });
+    const response = await api.post('/auth/login', { email, password });
     updateAuth(response.data.access_token);
     return response.data;
   };

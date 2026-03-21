@@ -123,7 +123,12 @@ export default function Results() {
     );
   }
 
-  const overallScore = suggestionsData?.overall_score || gapData?.match_percentage ? Math.round(gapData.match_percentage / 10) : 0;
+  const overallScore =
+    typeof suggestionsData?.overall_score === 'number'
+      ? suggestionsData.overall_score
+      : typeof gapData?.match_percentage === 'number'
+        ? Math.round(gapData.match_percentage / 10)
+        : 0;
   const scoreColor = overallScore >= 8 ? 'var(--accent)' : overallScore >= 6 ? 'var(--amber)' : 'var(--text-muted)';
   
   const renderScoreRing = (score, max, size, color) => {

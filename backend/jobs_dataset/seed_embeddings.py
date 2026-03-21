@@ -1,64 +1,38 @@
-import os
 import json
 import chromadb
-from sentence_transformers import SentenceTransformer
+import os
 
-def seed_database():
-    print("Loading jobs dataset...")
+def seed_jobs():
+    print("Seeding job dataset...")
+    
     jobs_path = os.path.join(os.path.dirname(__file__), "jobs.json")
-    
-    with open(jobs_path, "r", encoding="utf-8") as f:
+    with open(jobs_path, "r") as f:
         jobs = json.load(f)
-        
-    print(f"Loaded {len(jobs)} jobs. Initializing ChromaDB and embedding model...")
     
-    # Initialize Persistent ChromaDB
-    db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "chroma_db")
-    client = chromadb.PersistentClient(path=db_path)
+    client = chromadb.PersistentClient(path="./chroma_db")
+
+    collection = client.get_or_create_collection("jobs")
     
-    # Get or create collection
-    collection = client.get_or_create_collection(
-        name="jobs",
-        metadata={"hnsw:space": "cosine"}
-    )
-    
-    # Initialize inexpensive local embedding model
-    model = SentenceTransformer("all-MiniLM-L6-v2")
-    
-    # Prepare data for upsertion
-    ids = []
-    documents = []
-    metadatas = []
-    
-    for job in jobs:
-        # Create a rich text representation for embedding (Title + Skills + Description)
-        doc_text = f"{job['title']} " + " ".join(job['required_skills']) + f" {job['description']}"
-        
-        # Format metadata explicitly
-        metadata = {
+    # Store jobs as documents WITHOUT embeddings
+    # ChromaDB will use its built-in embedding function
+    ids = [job["id"] for job in jobs]
+    documents = [
+        job["title"] + " " + " ".join(job["required_skills"]) + " " + job.get("description", "")
+        for job in jobs
+    ]
+    metadatas = [
+        {
             "id": job["id"],
             "title": job["title"],
             "category": job["category"],
             "level": job["level"],
-            "required_skills": ", ".join(job["required_skills"])
+            "required_skills": ",".join(job["required_skills"])
         }
-        
-        ids.append(job["id"])
-        documents.append(doc_text)
-        metadatas.append(metadata)
-        
-    print("Generating embeddings... this might take a moment.")
-    embeddings = model.encode(documents).tolist()
+        for job in jobs
+    ]
     
-    print("Upserting into ChromaDB collection...")
-    collection.upsert(
-        ids=ids,
-        embeddings=embeddings,
-        documents=documents,
-        metadatas=metadatas
-    )
-    
-    print(f"Success! Seeded {len(jobs)} jobs into ChromaDB.")
+    collection.upsert(ids=ids, documents=documents, metadatas=metadatas)
+    print(f"Seeded {len(jobs)} jobs into ChromaDB successfully")
 
 if __name__ == "__main__":
-    seed_database()
+    seed_jobs()

@@ -12,6 +12,11 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    auto_seed = os.getenv("AUTO_SEED_JOBS", "false").lower() in ("1", "true", "yes")
+    if not auto_seed:
+        yield
+        return
+
     try:
         logger.info("Running startup tasks...")
         from jobs_dataset.seed_embeddings import seed_jobs

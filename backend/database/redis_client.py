@@ -46,6 +46,35 @@ class _InMemoryRedis:
         self._data[key] = (value, time.time() + int(seconds))
         return True
 
+    def incr(self, key: str) -> int:
+        current = self.get(key)
+        try:
+            current_int = int(current) if current is not None else 0
+        except ValueError:
+            current_int = 0
+        next_val = current_int + 1
+        _, existing_exp = self._data.get(key, (None, None))
+        self._data[key] = (str(next_val), existing_exp)
+        return next_val
+
+    def expire(self, key: str, seconds: int) -> bool:
+        value = self.get(key)
+        if value is None:
+            return False
+        self._data[key] = (value, time.time() + int(seconds))
+        return True
+
+    def ttl(self, key: str) -> int:
+        self._purge_expired()
+        value = self._data.get(key)
+        if not value:
+            return -2
+        _, exp = value
+        if exp is None:
+            return -1
+        remaining = int(exp - time.time())
+        return remaining if remaining > 0 else -2
+
     def exists(self, key: str) -> int:
         return 1 if self.get(key) is not None else 0
 

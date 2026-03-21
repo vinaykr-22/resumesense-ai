@@ -1,10 +1,12 @@
 import os
+import json
 import bcrypt
 from datetime import datetime, timedelta, timezone
 from jose import JWTError, jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from models.schemas import TokenData
+from database.redis_client import redis_client
 
 # Use this for Depends() to extract the token from Authorization header
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
@@ -16,6 +18,43 @@ users_db = {}
 JWT_SECRET = os.getenv("JWT_SECRET", "your_secret_here")
 JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
 JWT_EXPIRE_MINUTES = int(os.getenv("JWT_EXPIRE_MINUTES", "10080"))
+
+
+def _user_key(email: str) -> str:
+    return f"user:{email.lower()}"
+
+
+def save_user(email: str, hashed_password: str) -> None:
+    normalized = email.lower()
+    user_obj = {"email": normalized, "hashed_password": hashed_password}
+    users_db[normalized] = user_obj
+    try:
+        redis_client.set(_user_key(normalized), json.dumps(user_obj))
+    except Exception:
+        # Keep local behavior even if Redis is unavailable.
+        pass
+
+
+def get_user(email: str):
+    normalized = email.lower()
+    user_obj = users_db.get(normalized)
+    if user_obj:
+        return user_obj
+
+    try:
+        data = redis_client.get(_user_key(normalized))
+        if data:
+            parsed = json.loads(data)
+            users_db[normalized] = parsed
+            return parsed
+    except Exception:
+        pass
+
+    return None
+
+
+def user_exists(email: str) -> bool:
+    return get_user(email) is not None
 
 def hash_password(password: str) -> str:
     """Hashes a plaintext password string using bcrypt and a generated salt."""
@@ -57,8 +96,8 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> str:
         token_data = TokenData(email=email)
     except JWTError:
         raise credentials_exception
-        
-    if token_data.email not in users_db:
+
+    if not token_data.email or not user_exists(token_data.email):
         raise credentials_exception
-        
+
     return token_data.email

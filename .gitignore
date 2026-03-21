@@ -1,8 +1,29 @@
+# Virtual environments
 venv/
+.venv/
+.venv-1/
+.venv312/
+
+# Dependencies
 node_modules/
-chroma_db/
-.env
-__pycache__
-*.pyc
+
+# Build / Cache
 dist/
+chroma_db/
+__pycache__/
+*.pyc
+.pytest_cache/
 logs/
+
+# Environment files (secrets!)
+.env
+.env.local
+.env.production
+
+# OS / Editor
+.DS_Store
+*.suo
+*.sw?
+
+# Misc
+dummy_resume.docx

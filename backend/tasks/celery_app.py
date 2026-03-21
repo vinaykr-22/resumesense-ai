@@ -21,6 +21,15 @@ celery_app.conf.update(
 
 @celery_app.task(bind=True)
 def process_resume(self, resume_id: str, text: str, target_role: str = None):
+    """Celery task wrapper — delegates to the shared processing function."""
+    return _process_resume_sync(resume_id, text, target_role)
+
+
+def _process_resume_sync(resume_id: str, text: str, target_role: str = None):
+    """
+    Core resume processing logic. Can be called from both Celery tasks
+    and FastAPI BackgroundTasks.
+    """
     try:
         # 1. Update status to "parsing"
         status_obj = {
@@ -36,6 +45,9 @@ def process_resume(self, resume_id: str, text: str, target_role: str = None):
         import asyncio
         parsed_skills = asyncio.run(skill_extractor.extract_skills(text))
         flat_skills_list = parsed_skills.get("all_skills", [])
+        
+        # 2b. Cache skills so /resume/skills endpoint can find them
+        redis_client.setex(f"skills:{resume_id}", 24 * 3600, json.dumps(parsed_skills))
         
         # 3. Update status to "embedding"
         status_obj.update({
