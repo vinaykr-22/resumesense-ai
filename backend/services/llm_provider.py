@@ -12,6 +12,7 @@ class LLMProvider:
         self.ollama_base_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
         self.ollama_model = os.getenv("OLLAMA_MODEL", "llama3")
         self.openai_api_key = os.getenv("OPENAI_API_KEY")
+        self.openai_model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
         self.ollama_timeout_s = float(os.getenv("OLLAMA_TIMEOUT_SECONDS", "180"))
         
         if self.openai_api_key:
@@ -83,8 +84,9 @@ class LLMProvider:
             messages.append({"role": "system", "content": system})
         messages.append({"role": "user", "content": prompt})
         
+        logger.info(f"Calling OpenAI {self.openai_model}...")
         response = await self.openai_client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model=self.openai_model,
             messages=messages,
         )
         return response.choices[0].message.content
