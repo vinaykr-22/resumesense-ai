@@ -137,7 +137,7 @@ async def llm_health_check():
         result = await llm.complete("Say hello in exactly three words.")
         return {
             "provider": llm.provider,
-            "model": getattr(llm, 'openai_model', 'unknown'),
+            "model": getattr(llm, 'gemini_model', 'unknown') if llm.provider == "gemini" else getattr(llm, 'ollama_model', 'unknown'),
             "response": result,
             "ok": True
         }
@@ -145,9 +145,9 @@ async def llm_health_check():
         import traceback
         return {
             "provider": llm.provider,
-            "model": getattr(llm, 'openai_model', 'unknown'),
-            "has_openai_key": bool(llm.openai_api_key),
-            "openai_key_prefix": llm.openai_api_key[:12] + "..." if llm.openai_api_key else None,
+            "model": getattr(llm, 'gemini_model', 'unknown') if llm.provider == "gemini" else getattr(llm, 'ollama_model', 'unknown'),
+            "has_gemini_key": bool(llm.gemini_api_key),
+            "gemini_key_prefix": llm.gemini_api_key[:12] + "..." if llm.gemini_api_key else None,
             "error_type": type(e).__name__,
             "error": str(e),
             "traceback": traceback.format_exc()[-500:],

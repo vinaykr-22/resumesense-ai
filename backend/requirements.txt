@@ -8,7 +8,6 @@ python-jose[cryptography]
 passlib[bcrypt]
 celery
 redis
-openai
 httpx
 python-multipart
 numpy

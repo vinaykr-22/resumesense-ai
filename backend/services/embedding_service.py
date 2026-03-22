@@ -2,25 +2,19 @@ import os
 import json
 import hashlib
 from datetime import datetime, timezone
+import httpx
 import chromadb
 from database.redis_client import redis_client
-from openai import OpenAI
 
-# OpenAI client for embeddings (uses the same OPENAI_API_KEY)
-_openai_client = None
-
-EMBEDDING_MODEL = "text-embedding-3-small"
-EMBEDDING_DIMENSIONS = 1536  # default for text-embedding-3-small
+GEMINI_EMBEDDING_MODEL = "text-embedding-004"
+EMBEDDING_DIMENSIONS = 768  # Gemini text-embedding-004 outputs 768 dims
 
 
-def _get_openai_client():
-    global _openai_client
-    if _openai_client is None:
-        api_key = os.getenv("OPENAI_API_KEY")
-        if not api_key:
-            raise ValueError("OPENAI_API_KEY is not set")
-        _openai_client = OpenAI(api_key=api_key)
-    return _openai_client
+def _get_gemini_api_key():
+    key = os.getenv("GEMINI_API_KEY")
+    if not key:
+        raise ValueError("GEMINI_API_KEY is not set")
+    return key
 
 
 def get_chroma_client():
@@ -29,7 +23,7 @@ def get_chroma_client():
 
 
 def generate_embedding(text: str) -> list[float]:
-    """Generates an embedding vector via OpenAI API, with Redis caching."""
+    """Generates an embedding vector via Gemini API, with Redis caching."""
     cleaned_text = " ".join(text.split())
     if not cleaned_text:
         return [0.0] * EMBEDDING_DIMENSIONS
@@ -42,13 +36,23 @@ def generate_embedding(text: str) -> list[float]:
     if cached_emb:
         return json.loads(cached_emb)
 
-    # Cache miss: call OpenAI Embeddings API
-    client = _get_openai_client()
-    response = client.embeddings.create(
-        input=cleaned_text[:8000],  # text-embedding-3-small supports 8k tokens
-        model=EMBEDDING_MODEL,
-    )
-    vector = response.data[0].embedding
+    # Cache miss: call Gemini Embeddings API
+    api_key = _get_gemini_api_key()
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_EMBEDDING_MODEL}:embedContent?key={api_key}"
+    
+    payload = {
+        "model": f"models/{GEMINI_EMBEDDING_MODEL}",
+        "content": {
+            "parts": [{"text": cleaned_text[:2000]}]
+        },
+        "taskType": "RETRIEVAL_DOCUMENT"
+    }
+    
+    response = httpx.post(url, json=payload, timeout=30)
+    response.raise_for_status()
+    data = response.json()
+    
+    vector = data["embedding"]["values"]
 
     # Store in Redis (expires in 7 days)
     redis_client.setex(cache_key, 7 * 24 * 3600, json.dumps(vector))
@@ -57,16 +61,28 @@ def generate_embedding(text: str) -> list[float]:
 
 
 def generate_embeddings_batch(texts: list[str]) -> list[list[float]]:
-    """Batch-generate embeddings for multiple texts in a single API call."""
-    cleaned = [" ".join(t.split())[:8000] for t in texts]
-
-    client = _get_openai_client()
-    response = client.embeddings.create(
-        input=cleaned,
-        model=EMBEDDING_MODEL,
-    )
-
-    vectors = [item.embedding for item in response.data]
+    """Batch-generate embeddings using Gemini's batchEmbedContents endpoint."""
+    api_key = _get_gemini_api_key()
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_EMBEDDING_MODEL}:batchEmbedContents?key={api_key}"
+    
+    cleaned = [" ".join(t.split())[:2000] for t in texts]
+    
+    requests_list = [
+        {
+            "model": f"models/{GEMINI_EMBEDDING_MODEL}",
+            "content": {"parts": [{"text": text}]},
+            "taskType": "RETRIEVAL_DOCUMENT"
+        }
+        for text in cleaned
+    ]
+    
+    payload = {"requests": requests_list}
+    
+    response = httpx.post(url, json=payload, timeout=60)
+    response.raise_for_status()
+    data = response.json()
+    
+    vectors = [item["values"] for item in data["embeddings"]]
 
     # Cache each one
     for text, vector in zip(cleaned, vectors):

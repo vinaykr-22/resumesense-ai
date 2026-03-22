@@ -3,10 +3,10 @@ import os
 import sys
 
 def seed_jobs():
-    """Seed jobs into ChromaDB using OpenAI embeddings for consistency."""
+    """Seed jobs into ChromaDB using Gemini embeddings for consistency."""
     print("Seeding job dataset...")
 
-    # Load dotenv so OPENAI_API_KEY is available
+    # Load dotenv so GEMINI_API_KEY is available
     from dotenv import load_dotenv
     load_dotenv()
 
@@ -14,7 +14,7 @@ def seed_jobs():
     with open(jobs_path, "r") as f:
         jobs = json.load(f)
 
-    # Use the project's embedding service (OpenAI-powered)
+    # Use the project's embedding service (Gemini-powered)
     sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
     from services.embedding_service import generate_embeddings_batch, get_chroma_client
 
@@ -25,7 +25,7 @@ def seed_jobs():
     ]
 
     # Batch embed all jobs in a single API call (fast!)
-    print(f"Generating embeddings for {len(jobs)} jobs via OpenAI...")
+    print(f"Generating embeddings for {len(jobs)} jobs via Gemini...")
     embeddings = generate_embeddings_batch(documents)
     print("Embeddings generated.")
 
