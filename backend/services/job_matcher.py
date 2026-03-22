@@ -2,6 +2,53 @@ from typing import Optional, Dict, Any, List
 from database.redis_client import redis_client
 from services import embedding_service
 import json
+import os
+import re
+
+
+def _load_jobs() -> List[Dict[str, Any]]:
+    jobs_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "jobs_dataset", "jobs.json")
+    with open(jobs_path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def _fallback_match_jobs_by_overlap(resume_text: str, top_k: int = 10) -> List[Dict[str, Any]]:
+    """Fallback matcher using direct skill overlap against jobs.json."""
+    text = (resume_text or "").lower()
+    if not text.strip():
+        return []
+
+    jobs = _load_jobs()
+    scored = []
+
+    for job in jobs:
+        required_skills = [s for s in job.get("required_skills", []) if isinstance(s, str)]
+        if not required_skills:
+            continue
+
+        matched = 0
+        for skill in required_skills:
+            skill_l = skill.lower()
+            pattern = r"(?<![a-z0-9])" + re.escape(skill_l) + r"(?![a-z0-9])"
+            if re.search(pattern, text):
+                matched += 1
+
+        overlap_ratio = matched / len(required_skills)
+        score = round(overlap_ratio * 100, 1)
+        if score <= 0:
+            continue
+
+        scored.append({
+            "job_id": job.get("id"),
+            "title": job.get("title"),
+            "category": job.get("category"),
+            "level": job.get("level"),
+            "match_score": score,
+            "required_skills": required_skills,
+        })
+
+    scored.sort(key=lambda x: x["match_score"], reverse=True)
+    return scored[:top_k]
 
 def match_jobs(resume_text: str, top_k: int = 10) -> List[Dict[str, Any]]:
     """
@@ -27,9 +74,10 @@ def match_jobs(resume_text: str, top_k: int = 10) -> List[Dict[str, Any]]:
         )
         
         matches = []
-        if results and "documents" in results or "metadatas" in results:
+        if results and "metadatas" in results and results.get("metadatas"):
             if not results["metadatas"][0]:
-                return []
+                # Collection exists but query yielded no close matches.
+                return _fallback_match_jobs_by_overlap(resume_text, top_k)
                 
             for i in range(len(results["metadatas"][0])):
                 metadata = results["metadatas"][0][i]
@@ -53,13 +101,16 @@ def match_jobs(resume_text: str, top_k: int = 10) -> List[Dict[str, Any]]:
                     "match_score": score,
                     "required_skills": req_skills
                 })
-        
+        else:
+            return _fallback_match_jobs_by_overlap(resume_text, top_k)
+
         # Sort manually descending to be absolutely sure
-        return sorted(matches, key=lambda x: x["match_score"], reverse=True)
+        sorted_matches = sorted(matches, key=lambda x: x["match_score"], reverse=True)
+        return sorted_matches if sorted_matches else _fallback_match_jobs_by_overlap(resume_text, top_k)
         
     except Exception as e:
         print(f"Error querying ChromaDB: {e}")
-        return []
+        return _fallback_match_jobs_by_overlap(resume_text, top_k)
 
 # Legacy method wrapper to keep the celery task from crashing until it's updated
 def match(resume_id: str, target_role: Optional[str] = None) -> Dict[str, Any]:

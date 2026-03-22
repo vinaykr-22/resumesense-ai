@@ -38,6 +38,10 @@ export default function Results() {
         
         if (matches.length > 0) {
           setSelectedRole(matches[0].title);
+        } else {
+          setSelectedRole('');
+          setGapData(null);
+          setSuggestionsData(null);
         }
       } catch (err) {
         setError('Failed to load analysis results. Please try again.');
