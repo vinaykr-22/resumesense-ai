@@ -11,7 +11,7 @@ from services.rate_limiter import RateLimiter
 
 router = APIRouter()
 
-MAX_UPLOAD_SIZE_MB = int(os.getenv("MAX_UPLOAD_SIZE_MB", "5"))
+MAX_UPLOAD_SIZE_MB = int(os.getenv("MAX_UPLOAD_SIZE_MB", "10"))
 MAX_UPLOAD_SIZE_BYTES = MAX_UPLOAD_SIZE_MB * 1024 * 1024
 
 @router.post("/upload")
@@ -231,7 +231,7 @@ Shape: {
   'strengths': ['strength1', 'strength2']
 }"""
 
-    user_prompt = f"Resume text:\n{text[:2500]}\n\nTarget role: {target_role}\nMissing skills: {missing_skills}"
+    user_prompt = f"Resume text:\n{text[:15000]}\n\nTarget role: {target_role}\nMissing skills: {missing_skills}"
     
     try:
         from services.llm_provider import LLMProvider

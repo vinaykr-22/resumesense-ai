@@ -108,7 +108,7 @@ JSON shape: {
 }
 Be precise. Do not invent skills not mentioned. Normalize: "ML" -> "Machine Learning", "JS" -> "JavaScript"."""
     
-    prompt = f"Extract skills from this resume:\n\n{resume_text[:3000]}"
+    prompt = f"Extract skills from this resume:\n\n{resume_text[:15000]}"
     
     try:
         result = await llm.extract_json(prompt, system)

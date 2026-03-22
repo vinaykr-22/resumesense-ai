@@ -51,7 +51,7 @@ def generate_embedding(text: str) -> list[float]:
     payload = {
         "model": f"models/{model_name}",
         "content": {
-            "parts": [{"text": cleaned_text[:2000]}]
+            "parts": [{"text": cleaned_text[:15000]}]
         },
         "taskType": "RETRIEVAL_DOCUMENT"
     }
@@ -78,7 +78,7 @@ def generate_embeddings_batch(texts: list[str]) -> list[list[float]]:
     api_key = _get_gemini_api_key()
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:batchEmbedContents?key={api_key}"
     
-    cleaned = [" ".join(t.split())[:2000] for t in texts]
+    cleaned = [" ".join(t.split())[:15000] for t in texts]
     
     requests_list = [
         {
