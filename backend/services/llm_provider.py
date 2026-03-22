@@ -6,6 +6,13 @@ import httpx
 
 logger = logging.getLogger(__name__)
 
+
+def _normalize_model_name(model_name: str) -> str:
+    value = (model_name or "").strip()
+    if value.startswith("models/"):
+        return value[len("models/"):]
+    return value
+
 class LLMProvider:
     def __init__(self):
         raw_provider = os.getenv("LLM_PROVIDER", "gemini").lower().strip()
@@ -26,12 +33,14 @@ class LLMProvider:
         
         # Gemini
         self.gemini_api_key = os.getenv("GEMINI_API_KEY")
-        self.gemini_model = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+        self.gemini_model = _normalize_model_name(os.getenv("GEMINI_MODEL", "gemini-2.0-flash"))
         fallback_models_raw = os.getenv(
             "GEMINI_FALLBACK_MODELS",
-            "gemini-2.0-flash-lite,gemini-1.5-flash,gemini-1.5-flash-8b",
+            "gemini-2.0-flash-001,gemini-2.0-flash-lite-001,gemini-2.0-flash-lite",
         )
-        self.gemini_fallback_models = [m.strip() for m in fallback_models_raw.split(",") if m.strip()]
+        self.gemini_fallback_models = [
+            _normalize_model_name(m) for m in fallback_models_raw.split(",") if _normalize_model_name(m)
+        ]
 
     async def complete(self, prompt: str, system: str = None) -> str:
         """Route to the configured provider."""
