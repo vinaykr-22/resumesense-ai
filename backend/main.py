@@ -143,13 +143,17 @@ async def llm_health_check():
         }
     except Exception as e:
         import traceback
+        error_text = str(e)
+        is_quota_error = "429" in error_text or "quota" in error_text.lower() or "rate limit" in error_text.lower()
         return {
             "provider": llm.provider,
             "model": getattr(llm, 'gemini_model', 'unknown') if llm.provider == "gemini" else getattr(llm, 'ollama_model', 'unknown'),
             "has_gemini_key": bool(llm.gemini_api_key),
             "gemini_key_prefix": llm.gemini_api_key[:12] + "..." if llm.gemini_api_key else None,
             "error_type": type(e).__name__,
-            "error": str(e),
+            "error": error_text,
+            "is_quota_or_rate_limit": is_quota_error,
+            "hint": "Gemini 429: check quota/billing or set GEMINI_MODEL=gemini-1.5-flash" if is_quota_error else None,
             "traceback": traceback.format_exc()[-500:],
             "ok": False
         }

@@ -1,13 +1,23 @@
 import os
 import json
 import logging
+import asyncio
 import httpx
 
 logger = logging.getLogger(__name__)
 
 class LLMProvider:
     def __init__(self):
-        self.provider = os.getenv("LLM_PROVIDER", "gemini").lower()
+        raw_provider = os.getenv("LLM_PROVIDER", "gemini").lower().strip()
+        provider_aliases = {
+            "google": "gemini",
+            "gemeni": "gemini",
+        }
+        normalized_provider = provider_aliases.get(raw_provider, raw_provider)
+        if normalized_provider not in {"gemini", "ollama"}:
+            logger.warning(f"Unsupported LLM_PROVIDER '{raw_provider}', defaulting to 'gemini'")
+            normalized_provider = "gemini"
+        self.provider = normalized_provider
         
         # Ollama (local dev)
         self.ollama_base_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
@@ -17,6 +27,11 @@ class LLMProvider:
         # Gemini
         self.gemini_api_key = os.getenv("GEMINI_API_KEY")
         self.gemini_model = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+        fallback_models_raw = os.getenv(
+            "GEMINI_FALLBACK_MODELS",
+            "gemini-2.0-flash-lite,gemini-1.5-flash,gemini-1.5-flash-8b",
+        )
+        self.gemini_fallback_models = [m.strip() for m in fallback_models_raw.split(",") if m.strip()]
 
     async def complete(self, prompt: str, system: str = None) -> str:
         """Route to the configured provider."""
@@ -39,8 +54,11 @@ class LLMProvider:
     async def _gemini(self, prompt: str, system: str = None) -> str:
         if not self.gemini_api_key:
             raise ValueError("GEMINI_API_KEY is not set")
-        
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.gemini_model}:generateContent?key={self.gemini_api_key}"
+
+        model_candidates = []
+        for model in [self.gemini_model, *self.gemini_fallback_models]:
+            if model and model not in model_candidates:
+                model_candidates.append(model)
         
         # Build content parts
         contents = []
@@ -61,22 +79,58 @@ class LLMProvider:
         wants_json = bool(system) and ("return only valid json" in system.lower() or "you must return only valid json" in system.lower())
         if wants_json:
             payload["generationConfig"]["responseMimeType"] = "application/json"
-        
+
+        last_error = None
         async with httpx.AsyncClient() as client:
-            response = await client.post(url, json=payload, timeout=60)
-            response.raise_for_status()
-            data = response.json()
-            
-            # Extract text from Gemini response
-            candidates = data.get("candidates", [])
-            if not candidates:
-                raise ValueError(f"Gemini returned no candidates: {data}")
-            
-            parts = candidates[0].get("content", {}).get("parts", [])
-            if not parts:
-                raise ValueError(f"Gemini returned no parts: {data}")
-            
-            return parts[0].get("text", "")
+            for model_name in model_candidates:
+                url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={self.gemini_api_key}"
+
+                # Small retry loop for bursty 429 responses from Gemini.
+                for attempt in range(3):
+                    response = await client.post(url, json=payload, timeout=60)
+                    try:
+                        response.raise_for_status()
+                    except httpx.HTTPStatusError as e:
+                        status_code = e.response.status_code
+                        if status_code == 404:
+                            last_error = RuntimeError(
+                                f"Gemini model '{model_name}' not found or not available for this key."
+                            )
+                            logger.warning(str(last_error))
+                            break
+                        if status_code == 429 and attempt < 2:
+                            retry_after = e.response.headers.get("Retry-After")
+                            wait_seconds = 1 + attempt
+                            if retry_after and retry_after.isdigit():
+                                wait_seconds = min(int(retry_after), 10)
+                            await asyncio.sleep(wait_seconds)
+                            continue
+                        if status_code == 429:
+                            raise RuntimeError(
+                                f"Gemini rate limit or quota exceeded (HTTP 429) on model '{model_name}'. "
+                                "Reduce request volume, or check quota/billing for GEMINI_API_KEY."
+                            ) from e
+                        raise
+
+                    data = response.json()
+
+                    # Extract text from Gemini response
+                    candidates = data.get("candidates", [])
+                    if not candidates:
+                        raise ValueError(f"Gemini returned no candidates: {data}")
+
+                    parts = candidates[0].get("content", {}).get("parts", [])
+                    if not parts:
+                        raise ValueError(f"Gemini returned no parts: {data}")
+
+                    if model_name != self.gemini_model:
+                        logger.info(f"Gemini model fallback used: {model_name}")
+                    self.gemini_model = model_name
+                    return parts[0].get("text", "")
+
+        if last_error:
+            raise last_error
+        raise RuntimeError("Gemini call failed after retries")
 
     async def _ollama(self, prompt: str, system: str = None) -> str:
         url = f"{self.ollama_base_url}/api/generate"
