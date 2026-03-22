@@ -54,7 +54,10 @@ async def match_jobs_endpoint(
     # 1. Check cache first
     cached = redis_client.get(cache_key)
     if cached:
-        return json.loads(cached)
+        cached_obj = json.loads(cached)
+        cached_matches = cached_obj.get("matches", []) if isinstance(cached_obj, dict) else []
+        if isinstance(cached_matches, list) and len(cached_matches) > 0:
+            return cached_obj
         
     # 2. Fetch original resume text from Redis
     resume_data_str = redis_client.get(f"resume:{resume_id}")
@@ -62,6 +65,9 @@ async def match_jobs_endpoint(
         raise HTTPException(status_code=404, detail="Resume text not found. The resume may have expired.")
         
     resume_data = json.loads(resume_data_str)
+    if resume_data.get("user_email") and resume_data.get("user_email") != current_user:
+        raise HTTPException(status_code=403, detail="Not authorized to view this resume.")
+
     text = resume_data.get("text", "")
     if not text:
         raise HTTPException(status_code=500, detail="Resume text is empty.")

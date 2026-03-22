@@ -6,8 +6,15 @@ import httpx
 import chromadb
 from database.redis_client import redis_client
 
-GEMINI_EMBEDDING_MODEL = "text-embedding-004"
-EMBEDDING_DIMENSIONS = 768  # Gemini text-embedding-004 outputs 768 dims
+GEMINI_EMBEDDING_MODEL = os.getenv("GEMINI_EMBEDDING_MODEL", "gemini-embedding-001")
+EMBEDDING_DIMENSIONS = int(os.getenv("EMBEDDING_DIMENSIONS", "3072"))
+
+
+def _normalize_model_name(model_name: str) -> str:
+    value = (model_name or "").strip()
+    if value.startswith("models/"):
+        return value[len("models/"):]
+    return value
 
 
 def _get_gemini_api_key():
@@ -24,6 +31,7 @@ def get_chroma_client():
 
 def generate_embedding(text: str) -> list[float]:
     """Generates an embedding vector via Gemini API, with Redis caching."""
+    model_name = _normalize_model_name(GEMINI_EMBEDDING_MODEL)
     cleaned_text = " ".join(text.split())
     if not cleaned_text:
         return [0.0] * EMBEDDING_DIMENSIONS
@@ -38,10 +46,10 @@ def generate_embedding(text: str) -> list[float]:
 
     # Cache miss: call Gemini Embeddings API
     api_key = _get_gemini_api_key()
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_EMBEDDING_MODEL}:embedContent?key={api_key}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:embedContent?key={api_key}"
     
     payload = {
-        "model": f"models/{GEMINI_EMBEDDING_MODEL}",
+        "model": f"models/{model_name}",
         "content": {
             "parts": [{"text": cleaned_text[:2000]}]
         },
@@ -61,15 +69,20 @@ def generate_embedding(text: str) -> list[float]:
 
 
 def generate_embeddings_batch(texts: list[str]) -> list[list[float]]:
-    """Batch-generate embeddings using Gemini's batchEmbedContents endpoint."""
+    """Generate embeddings for multiple texts.
+
+    Uses batch endpoint when available; falls back to per-item embed calls for
+    models that do not support batch embedding.
+    """
+    model_name = _normalize_model_name(GEMINI_EMBEDDING_MODEL)
     api_key = _get_gemini_api_key()
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_EMBEDDING_MODEL}:batchEmbedContents?key={api_key}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:batchEmbedContents?key={api_key}"
     
     cleaned = [" ".join(t.split())[:2000] for t in texts]
     
     requests_list = [
         {
-            "model": f"models/{GEMINI_EMBEDDING_MODEL}",
+            "model": f"models/{model_name}",
             "content": {"parts": [{"text": text}]},
             "taskType": "RETRIEVAL_DOCUMENT"
         }
@@ -78,11 +91,14 @@ def generate_embeddings_batch(texts: list[str]) -> list[list[float]]:
     
     payload = {"requests": requests_list}
     
-    response = httpx.post(url, json=payload, timeout=60)
-    response.raise_for_status()
-    data = response.json()
-    
-    vectors = [item["values"] for item in data["embeddings"]]
+    try:
+        response = httpx.post(url, json=payload, timeout=60)
+        response.raise_for_status()
+        data = response.json()
+        vectors = [item["values"] for item in data["embeddings"]]
+    except Exception:
+        # Fallback for models that only support embedContent.
+        vectors = [generate_embedding(text) for text in cleaned]
 
     # Cache each one
     for text, vector in zip(cleaned, vectors):
