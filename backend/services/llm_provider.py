@@ -106,10 +106,12 @@ class LLMProvider:
                             await asyncio.sleep(wait_seconds)
                             continue
                         if status_code == 429:
-                            raise RuntimeError(
+                            last_error = RuntimeError(
                                 f"Gemini rate limit or quota exceeded (HTTP 429) on model '{model_name}'. "
                                 "Reduce request volume, or check quota/billing for GEMINI_API_KEY."
-                            ) from e
+                            )
+                            logger.warning(str(last_error))
+                            break
                         raise
 
                     data = response.json()
