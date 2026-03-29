@@ -1,0 +1,112 @@
+{
+  "technical_skills": {
+    "programming_languages": [
+      "Python", "JavaScript", "TypeScript", "Java", "C++", "C#", "Go", "Rust",
+      "Ruby", "PHP", "Swift", "Kotlin", "Scala", "R", "MATLAB", "Perl",
+      "Dart", "Lua", "Haskell", "Elixir", "Clojure", "Shell", "Bash",
+      "PowerShell", "SQL", "HTML", "CSS", "Sass", "LESS"
+    ],
+    "frameworks": [
+      "React", "Angular", "Vue.js", "Next.js", "Nuxt.js", "Svelte",
+      "Express.js", "Node.js", "FastAPI", "Django", "Flask", "Spring Boot",
+      "Ruby on Rails", "Laravel", "ASP.NET", ".NET Core", "Gin", "Echo",
+      "Actix", "Flutter", "React Native", "SwiftUI", "Jetpack Compose",
+      "Electron", "Tauri", "Qt", "GTK", "Streamlit", "Gradio"
+    ],
+    "databases": [
+      "PostgreSQL", "MySQL", "SQLite", "MariaDB", "Oracle", "SQL Server",
+      "MongoDB", "Redis", "Cassandra", "DynamoDB", "Firebase", "Supabase",
+      "Neo4j", "InfluxDB", "TimescaleDB", "CouchDB", "Elasticsearch",
+      "Pinecone", "ChromaDB", "Weaviate", "Qdrant", "Milvus"
+    ],
+    "cloud_devops": [
+      "AWS", "Azure", "GCP", "Docker", "Kubernetes", "Terraform",
+      "Ansible", "Jenkins", "GitHub Actions", "GitLab CI", "CircleCI",
+      "Travis CI", "ArgoCD", "Helm", "Prometheus", "Grafana", "Datadog",
+      "New Relic", "Nginx", "Apache", "Vercel", "Netlify", "Heroku",
+      "Render", "Railway", "Fly.io", "CloudFlare", "DigitalOcean",
+      "Linux", "Ubuntu", "CentOS", "AWS Lambda", "Azure Functions",
+      "Cloud Run", "ECS", "EKS", "S3", "EC2", "RDS", "CloudFormation"
+    ],
+    "data_ml": [
+      "TensorFlow", "PyTorch", "Keras", "scikit-learn", "XGBoost",
+      "LightGBM", "CatBoost", "Pandas", "NumPy", "SciPy", "Matplotlib",
+      "Seaborn", "Plotly", "Jupyter", "Apache Spark", "Hadoop", "Airflow",
+      "dbt", "Snowflake", "BigQuery", "Redshift", "Databricks",
+      "MLflow", "Kubeflow", "SageMaker", "Vertex AI", "Hugging Face",
+      "LangChain", "LlamaIndex", "OpenAI API", "Gemini API",
+      "Stable Diffusion", "BERT", "GPT", "Transformers",
+      "Computer Vision", "NLP", "Deep Learning", "Machine Learning",
+      "Reinforcement Learning", "GANs", "RAG", "Fine-tuning",
+      "Prompt Engineering", "Vector Databases", "Embeddings"
+    ],
+    "testing_qa": [
+      "Jest", "Mocha", "Chai", "Cypress", "Playwright", "Selenium",
+      "Pytest", "unittest", "JUnit", "TestNG", "RSpec", "PHPUnit",
+      "Postman", "k6", "Locust", "JMeter", "SonarQube", "ESLint",
+      "Prettier", "Black", "Ruff", "mypy"
+    ],
+    "tools_platforms": [
+      "Git", "GitHub", "GitLab", "Bitbucket", "Jira", "Confluence",
+      "Slack", "Notion", "Figma", "Adobe XD", "Sketch", "InVision",
+      "VS Code", "IntelliJ IDEA", "Vim", "Neovim", "Postman",
+      "Swagger", "GraphQL", "REST API", "gRPC", "WebSocket",
+      "OAuth", "JWT", "SAML", "SSO", "Stripe", "Twilio",
+      "SendGrid", "RabbitMQ", "Kafka", "Celery", "Redis Queue"
+    ]
+  },
+  "soft_skills": [
+    "Communication", "Leadership", "Teamwork", "Problem Solving",
+    "Critical Thinking", "Time Management", "Adaptability",
+    "Project Management", "Mentoring", "Collaboration",
+    "Public Speaking", "Negotiation", "Conflict Resolution",
+    "Decision Making", "Strategic Planning", "Stakeholder Management",
+    "Cross-functional Collaboration", "Agile Methodology", "Scrum",
+    "Kanban", "Emotional Intelligence", "Creativity", "Innovation",
+    "Attention to Detail", "Analytical Thinking", "Customer Focus",
+    "Business Acumen", "Data-Driven Decision Making"
+  ],
+  "industry_skills": {
+    "finance": [
+      "Financial Modeling", "Risk Analysis", "Bloomberg Terminal",
+      "Quantitative Analysis", "Algorithmic Trading", "Portfolio Management",
+      "Regulatory Compliance", "SOX Compliance", "Anti-Money Laundering",
+      "Credit Risk", "Market Risk", "Derivatives Pricing",
+      "Monte Carlo Simulation", "VBA", "Financial Reporting"
+    ],
+    "healthcare": [
+      "HIPAA Compliance", "Clinical Research", "EHR Systems",
+      "HL7 FHIR", "Medical Imaging", "Biostatistics",
+      "Clinical Trials", "FDA Regulations", "Pharmacovigilance",
+      "Telemedicine", "Health Informatics", "ICD Coding",
+      "Epic Systems", "Cerner", "DICOM"
+    ],
+    "marketing": [
+      "SEO", "SEM", "Content Strategy", "Social Media Marketing",
+      "Google Analytics", "Google Ads", "Facebook Ads", "HubSpot",
+      "Salesforce", "Marketo", "Mailchimp", "A/B Testing",
+      "Conversion Rate Optimization", "Brand Management",
+      "Market Research", "Customer Segmentation", "CRM",
+      "Email Marketing", "Influencer Marketing", "Copywriting"
+    ],
+    "cybersecurity": [
+      "Penetration Testing", "Vulnerability Assessment", "SIEM",
+      "SOC", "Incident Response", "Threat Modeling", "OWASP",
+      "Encryption", "PKI", "IAM", "Zero Trust Architecture",
+      "Network Security", "Firewalls", "IDS/IPS", "Forensics",
+      "Compliance (ISO 27001, SOC 2, NIST)", "Bug Bounty"
+    ],
+    "product_management": [
+      "Product Roadmap", "User Research", "A/B Testing",
+      "OKRs", "KPIs", "Competitive Analysis", "Go-to-Market Strategy",
+      "Feature Prioritization", "User Stories", "Wireframing",
+      "Prototyping", "Product Analytics", "Customer Discovery",
+      "MVP Development", "Product-Market Fit"
+    ]
+  },
+  "_meta": {
+    "version": 2,
+    "last_updated": "2026-03-28",
+    "description": "Skills database for resume analysis, ATS scoring, and gap analysis"
+  }
+}

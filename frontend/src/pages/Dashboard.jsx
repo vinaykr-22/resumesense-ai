@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FileText, ArrowRight, Activity, TrendingUp, Award, Clock } from 'lucide-react';
+import { FileText, ArrowRight, Activity, TrendingUp, Award, Clock, Sparkles } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import api from '../lib/api';
 import EmptyState from '../components/EmptyState';
@@ -172,6 +172,25 @@ export default function Dashboard() {
                   onMouseOut={e => e.currentTarget.style.borderColor = 'var(--border)'}
                   >
                     View results
+                  </Link>
+                  <Link to={'/analysis/' + item.resume_id} style={{
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)',
+                    border: '1px solid rgba(99, 102, 241, 0.3)',
+                    fontSize: '0.9rem',
+                    color: '#6366f1',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontWeight: 'bold',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseOver={e => { e.currentTarget.style.background = 'rgba(99, 102, 241, 0.2)'; e.currentTarget.style.borderColor = '#6366f1'; }}
+                  onMouseOut={e => { e.currentTarget.style.background = 'rgba(99, 102, 241, 0.1)'; e.currentTarget.style.borderColor = 'rgba(99, 102, 241, 0.3)'; }}
+                  >
+                    <Sparkles size={14} />
+                    V2 Advanced
                   </Link>
                 </div>
               ))}

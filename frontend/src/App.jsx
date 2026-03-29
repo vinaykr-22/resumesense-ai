@@ -8,7 +8,9 @@ import UploadPage from './pages/Upload';
 import Dashboard from './pages/Dashboard';
 import History from './pages/History';
 import Results from './pages/Results';
+import AnalysisPage from './pages/AnalysisPage';
 import Jobs from './pages/Jobs';
+import ErrorBoundary from './components/ErrorBoundary';
 
 import { ToastProvider } from './context/ToastContext';
 
@@ -53,6 +55,7 @@ const AppRoutes = () => {
           <Route path="jobs" element={<Jobs />} />
           <Route path="history" element={<History />} />
           <Route path="results/:id" element={<Results />} />
+          <Route path="analysis/:id" element={<AnalysisPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
@@ -65,7 +68,9 @@ function App() {
     <AuthProvider>
       <ToastProvider>
         <Router>
-          <AppRoutes />
+          <ErrorBoundary>
+            <AppRoutes />
+          </ErrorBoundary>
         </Router>
       </ToastProvider>
     </AuthProvider>

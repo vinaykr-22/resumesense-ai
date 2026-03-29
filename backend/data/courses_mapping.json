@@ -1,0 +1,159 @@
+{
+  "skills": {
+    "Python": {
+      "beginner": [
+        {"title": "Python for Everybody", "provider": "Coursera", "url": "https://www.coursera.org/specializations/python", "duration_hours": 60},
+        {"title": "Automate the Boring Stuff with Python", "provider": "Udemy", "url": "https://www.udemy.com/course/automate/", "duration_hours": 10},
+        {"title": "Introduction to Python Programming", "provider": "edX", "url": "https://www.edx.org/learn/python", "duration_hours": 30}
+      ],
+      "intermediate": [
+        {"title": "Python 3 Programming Specialization", "provider": "Coursera", "url": "https://www.coursera.org/specializations/python-3-programming", "duration_hours": 80},
+        {"title": "100 Days of Code - Python Pro Bootcamp", "provider": "Udemy", "url": "https://www.udemy.com/course/100-days-of-code/", "duration_hours": 60}
+      ],
+      "advanced": [
+        {"title": "Design Patterns in Python", "provider": "Udemy", "url": "https://www.udemy.com/course/design-patterns-python/", "duration_hours": 15},
+        {"title": "Advanced Python Mastery", "provider": "Pluralsight", "url": "https://www.pluralsight.com/courses/advanced-python", "duration_hours": 20}
+      ]
+    },
+    "JavaScript": {
+      "beginner": [
+        {"title": "The Complete JavaScript Course", "provider": "Udemy", "url": "https://www.udemy.com/course/the-complete-javascript-course/", "duration_hours": 69},
+        {"title": "JavaScript Algorithms and Data Structures", "provider": "freeCodeCamp", "url": "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/", "duration_hours": 300}
+      ],
+      "intermediate": [
+        {"title": "JavaScript: The Advanced Concepts", "provider": "Udemy", "url": "https://www.udemy.com/course/advanced-javascript-concepts/", "duration_hours": 25}
+      ],
+      "advanced": [
+        {"title": "JavaScript Performance", "provider": "Frontend Masters", "url": "https://frontendmasters.com/courses/web-performance/", "duration_hours": 5}
+      ]
+    },
+    "React": {
+      "beginner": [
+        {"title": "React - The Complete Guide", "provider": "Udemy", "url": "https://www.udemy.com/course/react-the-complete-guide-incl-redux/", "duration_hours": 50},
+        {"title": "Full-Stack Open (React)", "provider": "University of Helsinki", "url": "https://fullstackopen.com/en/", "duration_hours": 120}
+      ],
+      "intermediate": [
+        {"title": "Epic React", "provider": "Kent C. Dodds", "url": "https://epicreact.dev/", "duration_hours": 20}
+      ],
+      "advanced": [
+        {"title": "Advanced React Patterns", "provider": "Frontend Masters", "url": "https://frontendmasters.com/courses/advanced-react-patterns/", "duration_hours": 5}
+      ]
+    },
+    "Machine Learning": {
+      "beginner": [
+        {"title": "Machine Learning Specialization", "provider": "Coursera (Stanford)", "url": "https://www.coursera.org/specializations/machine-learning-introduction", "duration_hours": 80},
+        {"title": "Intro to Machine Learning with PyTorch", "provider": "Udacity", "url": "https://www.udacity.com/course/intro-to-machine-learning-with-pytorch--ud188", "duration_hours": 60}
+      ],
+      "intermediate": [
+        {"title": "Hands-On Machine Learning", "provider": "O'Reilly", "url": "https://www.oreilly.com/library/view/hands-on-machine-learning/9781098125967/", "duration_hours": 100},
+        {"title": "Fast.ai Practical Deep Learning", "provider": "fast.ai", "url": "https://course.fast.ai/", "duration_hours": 40}
+      ],
+      "advanced": [
+        {"title": "Deep Learning Specialization", "provider": "Coursera (DeepLearning.AI)", "url": "https://www.coursera.org/specializations/deep-learning", "duration_hours": 120}
+      ]
+    },
+    "AWS": {
+      "beginner": [
+        {"title": "AWS Cloud Practitioner Essentials", "provider": "AWS", "url": "https://aws.amazon.com/training/digital/aws-cloud-practitioner-essentials/", "duration_hours": 6},
+        {"title": "Ultimate AWS Certified Cloud Practitioner", "provider": "Udemy", "url": "https://www.udemy.com/course/aws-certified-cloud-practitioner-new/", "duration_hours": 15}
+      ],
+      "intermediate": [
+        {"title": "AWS Certified Solutions Architect - Associate", "provider": "Udemy", "url": "https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/", "duration_hours": 27}
+      ],
+      "advanced": [
+        {"title": "AWS Certified Solutions Architect - Professional", "provider": "A Cloud Guru", "url": "https://acloudguru.com/course/aws-certified-solutions-architect-professional", "duration_hours": 30}
+      ]
+    },
+    "Docker": {
+      "beginner": [
+        {"title": "Docker Mastery", "provider": "Udemy", "url": "https://www.udemy.com/course/docker-mastery/", "duration_hours": 20},
+        {"title": "Docker Getting Started", "provider": "Docker Docs", "url": "https://docs.docker.com/get-started/", "duration_hours": 3}
+      ],
+      "intermediate": [
+        {"title": "Docker and Kubernetes: The Complete Guide", "provider": "Udemy", "url": "https://www.udemy.com/course/docker-and-kubernetes-the-complete-guide/", "duration_hours": 22}
+      ],
+      "advanced": [
+        {"title": "Docker Deep Dive", "provider": "Pluralsight", "url": "https://www.pluralsight.com/courses/docker-deep-dive-update", "duration_hours": 6}
+      ]
+    },
+    "SQL": {
+      "beginner": [
+        {"title": "SQL for Data Science", "provider": "Coursera", "url": "https://www.coursera.org/learn/sql-for-data-science", "duration_hours": 16},
+        {"title": "The Complete SQL Bootcamp", "provider": "Udemy", "url": "https://www.udemy.com/course/the-complete-sql-bootcamp/", "duration_hours": 9}
+      ],
+      "intermediate": [
+        {"title": "Advanced SQL for Data Scientists", "provider": "DataCamp", "url": "https://www.datacamp.com/courses/advanced-sql", "duration_hours": 4}
+      ],
+      "advanced": [
+        {"title": "SQL Performance Explained", "provider": "Use The Index, Luke", "url": "https://use-the-index-luke.com/", "duration_hours": 10}
+      ]
+    },
+    "Kubernetes": {
+      "beginner": [
+        {"title": "Kubernetes for the Absolute Beginners", "provider": "KodeKloud", "url": "https://kodekloud.com/courses/kubernetes-for-the-absolute-beginners/", "duration_hours": 6}
+      ],
+      "intermediate": [
+        {"title": "Certified Kubernetes Administrator (CKA)", "provider": "Udemy", "url": "https://www.udemy.com/course/certified-kubernetes-administrator-with-practice-tests/", "duration_hours": 17}
+      ],
+      "advanced": [
+        {"title": "Certified Kubernetes Security Specialist (CKS)", "provider": "KodeKloud", "url": "https://kodekloud.com/courses/certified-kubernetes-security-specialist-cks/", "duration_hours": 12}
+      ]
+    },
+    "FastAPI": {
+      "beginner": [
+        {"title": "FastAPI - The Complete Course", "provider": "Udemy", "url": "https://www.udemy.com/course/fastapi-the-complete-course/", "duration_hours": 20},
+        {"title": "FastAPI Tutorial", "provider": "Official Docs", "url": "https://fastapi.tiangolo.com/tutorial/", "duration_hours": 8}
+      ],
+      "intermediate": [
+        {"title": "Full Stack FastAPI & React", "provider": "Packt", "url": "https://www.packtpub.com/product/full-stack-fastapi-react-and-mongodb/", "duration_hours": 15}
+      ],
+      "advanced": [
+        {"title": "Building Production-Ready FastAPI Apps", "provider": "TestDriven.io", "url": "https://testdriven.io/courses/tdd-fastapi/", "duration_hours": 10}
+      ]
+    },
+    "TypeScript": {
+      "beginner": [
+        {"title": "Understanding TypeScript", "provider": "Udemy", "url": "https://www.udemy.com/course/understanding-typescript/", "duration_hours": 15}
+      ],
+      "intermediate": [
+        {"title": "TypeScript Deep Dive", "provider": "Basarat", "url": "https://basarat.gitbook.io/typescript/", "duration_hours": 20}
+      ],
+      "advanced": [
+        {"title": "Production-Grade TypeScript", "provider": "Frontend Masters", "url": "https://frontendmasters.com/courses/production-typescript/", "duration_hours": 5}
+      ]
+    }
+  },
+  "certifications": {
+    "AWS": [
+      {"name": "AWS Certified Cloud Practitioner", "provider": "Amazon", "url": "https://aws.amazon.com/certification/certified-cloud-practitioner/", "level": "beginner"},
+      {"name": "AWS Certified Solutions Architect – Associate", "provider": "Amazon", "url": "https://aws.amazon.com/certification/certified-solutions-architect-associate/", "level": "intermediate"},
+      {"name": "AWS Certified Solutions Architect – Professional", "provider": "Amazon", "url": "https://aws.amazon.com/certification/certified-solutions-architect-professional/", "level": "advanced"}
+    ],
+    "Azure": [
+      {"name": "Azure Fundamentals (AZ-900)", "provider": "Microsoft", "url": "https://learn.microsoft.com/en-us/certifications/azure-fundamentals/", "level": "beginner"},
+      {"name": "Azure Administrator (AZ-104)", "provider": "Microsoft", "url": "https://learn.microsoft.com/en-us/certifications/azure-administrator/", "level": "intermediate"}
+    ],
+    "GCP": [
+      {"name": "Google Cloud Digital Leader", "provider": "Google", "url": "https://cloud.google.com/certification/cloud-digital-leader", "level": "beginner"},
+      {"name": "Professional Cloud Architect", "provider": "Google", "url": "https://cloud.google.com/certification/cloud-architect", "level": "advanced"}
+    ],
+    "Kubernetes": [
+      {"name": "Certified Kubernetes Administrator (CKA)", "provider": "CNCF", "url": "https://www.cncf.io/certification/cka/", "level": "intermediate"},
+      {"name": "Certified Kubernetes Application Developer (CKAD)", "provider": "CNCF", "url": "https://www.cncf.io/certification/ckad/", "level": "intermediate"}
+    ],
+    "Cybersecurity": [
+      {"name": "CompTIA Security+", "provider": "CompTIA", "url": "https://www.comptia.org/certifications/security", "level": "beginner"},
+      {"name": "Certified Ethical Hacker (CEH)", "provider": "EC-Council", "url": "https://www.eccouncil.org/programs/certified-ethical-hacker-ceh/", "level": "intermediate"},
+      {"name": "CISSP", "provider": "ISC2", "url": "https://www.isc2.org/certifications/cissp", "level": "advanced"}
+    ],
+    "Data Science": [
+      {"name": "TensorFlow Developer Certificate", "provider": "Google", "url": "https://www.tensorflow.org/certificate", "level": "intermediate"},
+      {"name": "Professional Data Engineer", "provider": "Google", "url": "https://cloud.google.com/certification/data-engineer", "level": "advanced"}
+    ]
+  },
+  "_meta": {
+    "version": 2,
+    "last_updated": "2026-03-28",
+    "description": "Course and certification recommendations mapped by skill and proficiency level"
+  }
+}

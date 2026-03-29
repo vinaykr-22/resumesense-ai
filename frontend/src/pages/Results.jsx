@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ChevronRight, FileText, CheckCircle2, ChevronDown, ChevronUp, AlertCircle, Loader2 } from 'lucide-react';
+import { ChevronRight, FileText, CheckCircle2, ChevronDown, ChevronUp, AlertCircle, Loader2, Sparkles } from 'lucide-react';
 import { RadialBarChart, RadialBar, PolarAngleAxis, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import api from '../lib/api';
 import { SkeletonText, SkeletonCard } from '../components/Skeleton';
@@ -184,6 +184,31 @@ export default function Results() {
               <h1 style={{ fontSize: '2.5rem', margin: 0, lineHeight: 1 }}>Analysis Complete</h1>
             </div>
             <p style={{ color: 'var(--text-muted)' }}>Resume ID: {resumeId}</p>
+            <div style={{ marginTop: '1rem' }}>
+              <Link 
+                to={`/analysis/${resumeId}`} 
+                className="btn-v2"
+                style={{ 
+                  display: 'inline-flex', 
+                  alignItems: 'center', 
+                  gap: '8px', 
+                  background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)', 
+                  color: '#fff', 
+                  padding: '8px 16px', 
+                  borderRadius: '12px', 
+                  fontSize: '0.9rem', 
+                  fontWeight: 'bold', 
+                  textDecoration: 'none',
+                  boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)',
+                  transition: 'transform 0.2s ease'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+                onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+              >
+                <Sparkles size={16} />
+                Try V2 Advanced Analysis
+              </Link>
+            </div>
           </div>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', background: 'var(--surface)', padding: '1rem 2rem', borderRadius: '16px', border: '1px solid var(--border)' }}>

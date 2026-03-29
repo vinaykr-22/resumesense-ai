@@ -1,0 +1,78 @@
+{
+  "strong_verbs": {
+    "leadership": [
+      "Spearheaded", "Orchestrated", "Championed", "Directed", "Pioneered",
+      "Mobilized", "Galvanized", "Steered", "Cultivated", "Established",
+      "Founded", "Instituted", "Launched", "Oversaw", "Presided"
+    ],
+    "achievement": [
+      "Achieved", "Exceeded", "Surpassed", "Attained", "Delivered",
+      "Accomplished", "Earned", "Generated", "Produced", "Secured",
+      "Won", "Outperformed", "Maximized", "Captured", "Realized"
+    ],
+    "technical": [
+      "Engineered", "Architected", "Optimized", "Automated", "Debugged",
+      "Deployed", "Developed", "Designed", "Implemented", "Integrated",
+      "Migrated", "Refactored", "Scaled", "Streamlined", "Built",
+      "Configured", "Customized", "Programmed", "Coded", "Constructed"
+    ],
+    "analytical": [
+      "Analyzed", "Assessed", "Audited", "Benchmarked", "Calculated",
+      "Diagnosed", "Evaluated", "Forecasted", "Identified", "Investigated",
+      "Mapped", "Measured", "Modeled", "Quantified", "Researched",
+      "Surveyed", "Tested", "Validated", "Verified", "Interpreted"
+    ],
+    "communication": [
+      "Articulated", "Negotiated", "Persuaded", "Presented", "Advocated",
+      "Briefed", "Clarified", "Conveyed", "Documented", "Drafted",
+      "Edited", "Illustrated", "Promoted", "Published", "Reported",
+      "Translated", "Authored", "Corresponded", "Lobbied", "Mediated"
+    ],
+    "improvement": [
+      "Accelerated", "Amplified", "Boosted", "Consolidated", "Decreased",
+      "Eliminated", "Enhanced", "Expedited", "Improved", "Increased",
+      "Minimized", "Modernized", "Reduced", "Revamped", "Simplified",
+      "Strengthened", "Transformed", "Upgraded", "Revitalized", "Elevated"
+    ],
+    "collaboration": [
+      "Aligned", "Collaborated", "Coordinated", "Facilitated", "Harmonized",
+      "Liaised", "Mentored", "Partnered", "Recruited", "Trained",
+      "Unified", "Coached", "Empowered", "Guided", "Supervised"
+    ]
+  },
+  "weak_verbs": [
+    "Helped", "Assisted", "Worked on", "Was responsible for",
+    "Was involved in", "Participated in", "Dealt with", "Handled",
+    "Did", "Made", "Got", "Tried", "Used", "Had to",
+    "Was part of", "Contributed to", "Supported", "Maintained",
+    "Managed", "Ran", "Took care of", "Was in charge of",
+    "Was tasked with", "Worked with"
+  ],
+  "replacements": {
+    "helped": ["Facilitated", "Enabled", "Empowered", "Supported"],
+    "assisted": ["Collaborated with", "Partnered with", "Advised"],
+    "worked on": ["Developed", "Delivered", "Executed", "Built"],
+    "was responsible for": ["Managed", "Directed", "Oversaw", "Led"],
+    "was involved in": ["Contributed to", "Played a key role in", "Drove"],
+    "participated in": ["Collaborated on", "Engaged in", "Contributed to"],
+    "dealt with": ["Resolved", "Addressed", "Managed", "Navigated"],
+    "handled": ["Managed", "Oversaw", "Administered", "Processed"],
+    "did": ["Executed", "Performed", "Accomplished", "Completed"],
+    "made": ["Created", "Developed", "Produced", "Crafted"],
+    "got": ["Secured", "Obtained", "Acquired", "Earned"],
+    "tried": ["Attempted", "Explored", "Pursued", "Tested"],
+    "used": ["Leveraged", "Utilized", "Applied", "Employed"],
+    "had to": ["Was required to", "Undertook", "Took initiative to"],
+    "was part of": ["Served on", "Contributed to", "Participated in"],
+    "supported": ["Bolstered", "Reinforced", "Strengthened", "Facilitated"],
+    "maintained": ["Sustained", "Preserved", "Managed", "Administered"],
+    "managed": ["Directed", "Oversaw", "Orchestrated", "Supervised"],
+    "ran": ["Led", "Directed", "Managed", "Operated"],
+    "took care of": ["Managed", "Handled", "Administered", "Oversaw"]
+  },
+  "_meta": {
+    "version": 2,
+    "last_updated": "2026-03-28",
+    "description": "Strong and weak action verbs for resume bullet point analysis and rewriting"
+  }
+}

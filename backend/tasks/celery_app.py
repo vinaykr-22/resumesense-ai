@@ -4,6 +4,12 @@ from celery import Celery
 from database.redis_client import store_status, redis_client
 from services import skill_extractor, embedding_service, job_matcher
 
+from services.ats_scorer import ATSScorer
+from services.rewriter import Rewriter
+from services.job_matcher_v2 import JobMatcher as DynamicJobMatcher
+from services.course_recommender import CourseRecommender
+import re
+
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 
 celery_app = Celery(
@@ -68,14 +74,66 @@ def _process_resume_sync(resume_id: str, text: str, target_role: str = None):
         })
         store_status(resume_id, status_obj)
         
-        # 6. Run job matching
+        # 6. Run legacy job matching
         match_result = job_matcher.match(resume_id, target_role)
         
+        # ==========================================
+        # 6B. V2 ANALYSIS SUITE INJECTION (NEW)
+        # ==========================================
+        
+        # Extract V2 specific payload sets
+        ats_score_res = { "total_score": 0.0, "breakdown": {} }
+        rewritten_bullets = []
+        weak_bullets = []
+        job_match_data = {}
+        learning_path = {}
+        
+        try:
+            # 6B.1 ATS Scoring
+            ats_score_res = ATSScorer().score_resume(text, flat_skills_list)
+            
+            # 6B.2 Bullet Rewriting (Optional limits to top 5 UI bullets)
+            extracted_bullets = []
+            for line in text.split("\n"):
+                match = re.match(r"^\s*([\-\*\•\>]|\d+\.|\w\))\s+(.+)", line)
+                if match:
+                    extracted_bullets.append(match.group(2).strip())
+            
+            if extracted_bullets:
+                weak_bullets = extracted_bullets[:5]  # Limit to 5 for fast demo rendering
+                rewritten_bullets = Rewriter().rewrite_bullets_batch(weak_bullets)
+                
+            # 6B.3 Job Matching V2 + Learning Path (If target JD provided)
+            # If target_role has more than 50 chars, it's likely a pasted Job Description.
+            if target_role and len(target_role) > 50:
+                jb_v2 = DynamicJobMatcher()
+                job_match_data = jb_v2.match_resume_to_jd(flat_skills_list, target_role)
+                
+                missing = job_match_data.get("missing_skills", [])
+                if missing:
+                    learning_path = CourseRecommender().generate_learning_path(missing, target_role)
+                    
+        except Exception as e:
+            # V2 processing is optional and append-only, so fail gracefully preserving V1
+            print(f"V2 Analysis Failure: {str(e)}")
+            pass
+            
+        # ==========================================
         # 7. Store final result in Redis
+        # ==========================================
         final_result = {
             "resume_id": resume_id,
             "skills": parsed_skills,
-            "matches": match_result
+            "matches": match_result,  # V1 Matches
+            "analysis_data": {
+                "ats_score": ats_score_res.get("total_score", 0.0),
+                "ats_breakdown": ats_score_res.get("breakdown", {}),
+                "weak_bullets": weak_bullets,
+                "rewritten_bullets": rewritten_bullets,
+                "extracted_skills": flat_skills_list,
+                "job_match_data": job_match_data,
+                "learning_path": learning_path
+            }
         }
         redis_client.setex(f"result:{resume_id}", 3600, json.dumps(final_result))
         

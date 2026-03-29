@@ -50,11 +50,32 @@ async def upload_resume(
     # 4. Generate resume UUID
     resume_id = "res_" + uuid.uuid4().hex[:10]
     
+    # 4.5 Detect existing versions dynamically
+    cursor = '0'
+    version_count = 0
+    while cursor != 0:
+        cursor, keys = redis_client.scan(cursor=cursor, match="resume:res_*", count=100)
+        for k in keys:
+            try:
+                data_str = redis_client.get(k)
+                if data_str:
+                    d = json.loads(data_str)
+                    if d.get("user_email") == current_user:
+                        version_count += 1
+            except Exception:
+                pass
+        if cursor == 0 or cursor == b'0':
+            break
+            
+    next_version = version_count + 1
+    
     # 5. Store in Redis
     resume_data = {
         "text": extracted_text,
         "user_email": current_user,
-        "uploaded_at": datetime.now(timezone.utc).isoformat()
+        "uploaded_at": datetime.now(timezone.utc).isoformat(),
+        "version": next_version,
+        "parsed_content": {"raw_text": extracted_text}
     }
     # Keep original text around for a bit (e.g. 7 days)
     redis_client.setex(f"resume:{resume_id}", 7 * 24 * 3600, json.dumps(resume_data))
@@ -182,7 +203,10 @@ async def get_resume_suggestions(
 ):
     resume_id = req.resume_id
     target_role = req.target_role
-    cache_key = f"suggestions:{resume_id}:{target_role}"
+    
+    import hashlib
+    short_key_val = hashlib.md5(target_role.encode()).hexdigest()
+    cache_key = f"suggestions_v3:{resume_id}:{short_key_val}"
     
     # Check cache
     cached = redis_client.get(cache_key)
@@ -203,46 +227,68 @@ async def get_resume_suggestions(
     if not text:
         raise HTTPException(status_code=500, detail="Resume text is empty.")
         
-    # Attempt to fetch missing skills from gap analysis cache
-    missing_skills = []
-    gap_cache = redis_client.get(f"gap:{resume_id}:{target_role}")
-    if gap_cache:
-        try:
-            gap_data = json.loads(gap_cache)
-            missing_skills = gap_data.get("missing_skills", [])
-        except Exception:
-            pass
-            
-    system_prompt = """You are a professional resume coach. Analyze the resume and give specific,
-actionable improvement suggestions for the target role. Return ONLY valid JSON.
-Shape: {
-  'overall_score': 1-10,
-  'summary': 'One sentence assessment',
-  'suggestions': [
-    {
-      'category': 'achievements|formatting|skills|experience|keywords',
-      'priority': 'high|medium|low',
-      'issue': 'What is wrong',
-      'fix': 'Exactly what to do',
-      'example': 'Before → After example if applicable'
-    }
-  ],
-  'ats_tips': ['tip1', 'tip2', 'tip3'],
-  'strengths': ['strength1', 'strength2']
-}"""
-
-    user_prompt = f"Resume text:\n{text[:15000]}\n\nTarget role: {target_role}\nMissing skills: {missing_skills}"
-    
     try:
-        from services.llm_provider import LLMProvider
-        llm = LLMProvider()
-        suggestions_json = await llm.extract_json(user_prompt, system_prompt)
+        from services.ats_scorer import ATSScorer
+        from services.rewriter import Rewriter
+        from services.course_recommender import CourseRecommender
+        from services.job_matcher_v2 import JobMatcher as DynamicJobMatcher
+        import re
+        import asyncio
+
+        # Fetch skills from redis to avoid re-extracting
+        skills_cache = redis_client.get(f"skills:{resume_id}")
+        flat_skills_list = []
+        if skills_cache:
+            skills_data = json.loads(skills_cache)
+            flat_skills_list = skills_data.get("all_skills", [])
+        
+        # Job Matching V2 (Dynamic Match)
+        job_match_data = {}
+        learning_path = {}
+        target_skills = []
+        
+        if target_role and len(target_role) > 10:
+            jb_v2 = DynamicJobMatcher()
+            job_match_data = jb_v2.match_resume_to_jd(flat_skills_list, target_role)
+            target_skills = jb_v2.extract_jd_skills(target_role)
+            
+            missing = job_match_data.get("missing_skills", [])
+            if missing:
+                learning_path = CourseRecommender().generate_learning_path(missing, target_role)
+
+        # ATS Scoring
+        ats_score_res = ATSScorer().score_resume(text, flat_skills_list, target_skills)
+
+        # Bullet Rewriting
+        extracted_bullets = []
+        for line in text.split("\n"):
+            match = re.match(r"^\s*([\-\*\•\>]|\d+\.|\w\))\s+(.+)", line)
+            if match:
+                extracted_bullets.append(match.group(2).strip())
+        
+        weak_bullets = extracted_bullets[:5] if extracted_bullets else []
+        
+        # Run rewrite in thread to avoid blocking event loop
+        rewritten_bullets = await asyncio.to_thread(Rewriter().rewrite_bullets_batch, weak_bullets) if weak_bullets else []
+
+        suggestions_json = {
+            "ats_score": ats_score_res.get("total_score", 0.0),
+            "ats_breakdown": ats_score_res.get("breakdown", {}),
+            "weak_bullets": weak_bullets,
+            "rewritten_bullets": rewritten_bullets,
+            "job_match_data": job_match_data,
+            "learning_path": learning_path
+        }
         
         # Cache for 2 hours
+        # using the same cache key instantiated at the top
         redis_client.setex(cache_key, 2 * 3600, json.dumps(suggestions_json))
         return suggestions_json
+
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to generate suggestions: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Failed to generate analysis: {str(e)}")
 
 @router.get("/history")
 async def get_resume_history(current_user: str = Depends(get_current_user)):
@@ -291,3 +337,104 @@ async def get_resume_history(current_user: str = Depends(get_current_user)):
     
     # Return top 10
     return history[:10]
+
+# ==========================================
+# V2 Endpoints: Resume Versions & Comparison
+# ==========================================
+
+@router.get("/versions")
+async def get_resume_versions(current_user: str = Depends(get_current_user)):
+    """Fetches all uploaded iterations of a user's resume alongside their computed ATS scores."""
+    cursor = '0'
+    resume_keys = set()
+    while cursor != 0:
+        cursor, keys = redis_client.scan(cursor=cursor, match="resume:res_*", count=100)
+        resume_keys.update(keys)
+        if cursor == 0 or cursor == b'0':
+            break
+            
+    versions = []
+    for k in resume_keys:
+        key_str = k.decode('utf-8') if isinstance(k, bytes) else str(k)
+        
+        try:
+            r_data_str = redis_client.get(key_str)
+            if not r_data_str:
+                continue
+                
+            r_data = json.loads(r_data_str)
+            if r_data.get("user_email") == current_user:
+                res_id = key_str.replace("resume:", "")
+                
+                # Fetch ATS score from result payload
+                score = 0.0
+                res_str = redis_client.get(f"result:{res_id}")
+                if res_str:
+                    try:
+                        res_json = json.loads(res_str)
+                        score = res_json.get("analysis_data", {}).get("ats_score", 0.0)
+                    except Exception:
+                        pass
+                        
+                versions.append({
+                    "resume_id": res_id,
+                    "filename": r_data.get("filename", "Unknown"),
+                    "uploaded_at": r_data.get("uploaded_at"),
+                    "version": r_data.get("version", 1),
+                    "ats_score": score
+                })
+        except Exception:
+            continue
+            
+    # Sort newest first
+    versions.sort(key=lambda x: x.get("uploaded_at") or "", reverse=True)
+    return {"versions": versions}
+
+
+@router.get("/compare")
+async def compare_versions(v1: str, v2: str, current_user: str = Depends(get_current_user)):
+    """Compares two distinct resume IDs and calculates the delta in scores and skills."""
+    res1_str = redis_client.get(f"result:{v1}")
+    res2_str = redis_client.get(f"result:{v2}")
+    
+    if not res1_str or not res2_str:
+        raise HTTPException(
+            status_code=404, 
+            detail="One or both resume versions not found or haven't finished processing."
+        )
+        
+    try:
+        r1 = json.loads(res1_str)
+        r2 = json.loads(res2_str)
+    except Exception:
+        raise HTTPException(status_code=500, detail="Corrupted result data in database.")
+        
+    # Extract scores and skills from the V2 schema analysis_data
+    score1 = r1.get("analysis_data", {}).get("ats_score", 0.0)
+    score2 = r2.get("analysis_data", {}).get("ats_score", 0.0)
+    
+    skills1 = set([s.lower() for s in r1.get("analysis_data", {}).get("extracted_skills", [])])
+    skills2 = set([s.lower() for s in r2.get("analysis_data", {}).get("extracted_skills", [])])
+    
+    new_skills = sorted(list(skills2 - skills1))
+    dropped_skills = sorted(list(skills1 - skills2))
+    score_diff = round(score2 - score1, 1)
+    
+    return {
+        "v1": {
+            "resume_id": v1,
+            "ats_score": score1,
+            "skills_count": len(skills1)
+        },
+        "v2": {
+            "resume_id": v2,
+            "ats_score": score2,
+            "skills_count": len(skills2)
+        },
+        "improvements": {
+            "score_diff": f"+{score_diff}" if score_diff > 0 else str(score_diff),
+            "new_skills": new_skills,
+            "dropped_skills": dropped_skills
+        }
+    }
+
